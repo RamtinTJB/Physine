@@ -16,7 +16,15 @@ class Vector {
 
     public:
         typedef T value_type;
+        using iterator = T*;
+        using const_iterator = T const*;
+
         constexpr size_t dimension() const noexcept { return N; }
+
+        iterator begin() { return vector_; }
+        iterator end() { return vector_ + N; }
+        const_iterator begin() const { return vector_; }
+        const_iterator end() const { return vector_ + N; }
 
         T& at(size_t index) const {
             if (index >= N || index < 0) throw std::out_of_range("Index out of bounds");
@@ -121,7 +129,7 @@ class Vector {
             return *this;
         }
 
-        Vector<T, N> operator-() {
+        Vector<T, N> operator-() const {
             return opposite();
         }
 };
