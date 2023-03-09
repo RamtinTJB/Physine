@@ -82,7 +82,7 @@ class Vector {
             return multiply(1.0/magnitude());
         }
 
-        Vector<T, N> projection_unto(const Vector<T, N>& other) {
+        Vector<T, N> projection_unto(const Vector<T, N>& other) const {
             return other.scalar_multiply((dot(other))/(other.dot(other)));
         }
 

@@ -106,7 +106,7 @@ SCENARIO("Cross Product") {
     CHECK(v2.cross(v1) == res.opposite());
 }
 
-SCENARIO("Projection:") {
+SCENARIO("Projection") {
     Vector2 v1 {3, 4};
     Vector2 v2 {5, -12};
 
