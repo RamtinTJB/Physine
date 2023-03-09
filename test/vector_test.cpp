@@ -106,9 +106,11 @@ SCENARIO("Cross Product") {
     CHECK(v2.cross(v1) == res.opposite());
 }
 
-SCENARIO("Projection") {
+SCENARIO("Projection & Unit vector") {
     Vector2 v1 {3, 4};
     Vector2 v2 {5, -12};
 
     CHECK(v1.projection_unto(v2) == Vector2{-165.0/169, 396.0/169});
+
+    CHECK(v1.unit() == Vector2{0.6, 0.8});
 }
