@@ -177,4 +177,23 @@ inline std::ostream& operator<<(std::ostream& os, const Vector<T, N>& rhs) {
     return os;
 }
 
+template <class T>
+class Vector3 : public Vector<T, 3> {
+    public:
+        using Vector<T, 3>::Vector;
+
+        T x = ([this]() { return this->at(0); })();
+        T y = ([this]() { return this->at(1); })();
+        T z = ([this]() { return this->at(2); })();
+};
+
+template <class T>
+class Vector2 : public Vector<T, 2> {
+    public:
+        using Vector<T, 2>::Vector;
+
+        T x = ([this]() { return this->at(0); })();
+        T y = ([this]() { return this->at(1); })();
+};
+
 #endif
