@@ -78,6 +78,14 @@ class Vector {
             return scalar_multiply(-1);
         }
 
+        Vector<T, N> unit() const {
+            return multiply(1.0/magnitude());
+        }
+
+        Vector<T, N> projection_unto(const Vector<T, N>& other) {
+            return other.scalar_multiply((dot(other))/(other.dot(other)));
+        }
+
         Vector() {
             for (int i = 0; i < N; ++i) {
                 vector_[i] = 0;

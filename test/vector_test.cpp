@@ -40,7 +40,8 @@ SCENARIO("Exceptions") {
     CHECK_THROWS_AS(v.at(3), const std::out_of_range&);
     CHECK_THROWS_AS(v.at(-1), const std::out_of_range&);
     CHECK_THROWS_AS(invalid_initialization(), const std::invalid_argument&);
-    // TODO Add Cross product unit test
+    Vector<double, 4> v1 {1, 1, 1, 1};
+    CHECK_THROWS_AS(v1.cross(v), const std::logic_error);
 }
 
 SCENARIO("Equality Test") {
@@ -103,4 +104,11 @@ SCENARIO("Cross Product") {
 
     CHECK(v1.cross(v2) == res);
     CHECK(v2.cross(v1) == res.opposite());
+}
+
+SCENARIO("Projection:") {
+    Vector2 v1 {3, 4};
+    Vector2 v2 {5, -12};
+
+    CHECK(v1.projection_unto(v2) == Vector2{-165.0/169, 396.0/169});
 }
