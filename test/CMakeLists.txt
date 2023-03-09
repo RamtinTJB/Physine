@@ -24,3 +24,4 @@ endfunction()
 
 make_test(doctest_test)
 make_test(vector_test)
+make_test(time_test)
