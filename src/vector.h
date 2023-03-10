@@ -21,21 +21,19 @@ class Vector {
 
         constexpr size_t dimension() const noexcept { return N; }
 
-        iterator begin() { return vector_; }
-        iterator end() { return vector_ + N; }
         const_iterator begin() const { return vector_; }
         const_iterator end() const { return vector_ + N; }
 
-        T& at(size_t index) const {
+        constexpr T& at(size_t index) const {
             if (index >= N || index < 0) throw std::out_of_range("Index out of bounds");
             return vector_[index];
         }
 
-        T& operator[](size_t index) const {
+        constexpr T& operator[](size_t index) const {
             return at(index);
         } 
 
-        double magnitude() const noexcept {
+        constexpr double magnitude() const noexcept {
             if (N == 0) return 0;
             double sum_squares = 0;
             for (int i = 0; i < N; ++i) {
@@ -44,9 +42,9 @@ class Vector {
             return std::sqrt(sum_squares);
         }
 
-        double size() const noexcept { return magnitude(); }
+        constexpr double size() const noexcept { return magnitude(); }
 
-        double dot(const Vector<T, N>& other) const {
+        constexpr double dot(const Vector<T, N>& other) const {
             if (N == 0) return 0;
             double result = 0;
             for (int i = 0; i < N; ++i) {
@@ -55,18 +53,7 @@ class Vector {
             return result;
         }
 
-        Vector<T, 3> cross(const Vector<T, 3>& other) const {
-            if (N != 3) {
-                throw std::logic_error("Cross product only applies to 3 dimensional vectors.");
-            }
-            Vector<T, 3> res;
-            res[0] = vector_[1]*other[2] - other[1]*vector_[2];
-            res[1] = vector_[2]*other[0] - other[2]*vector_[0];
-            res[2] = vector_[0]*other[1] - other[0]*vector_[1];
-            return res;
-        }
-
-        Vector<T, N> add(const Vector<T, N>&other) const {
+        constexpr Vector<T, N> add(const Vector<T, N>&other) const {
             Vector<T, N> new_vector;
             for (int i = 0; i < N; ++i) {
                 new_vector.vector_[i] = vector_[i] + other.vector_[i];
@@ -74,7 +61,7 @@ class Vector {
             return new_vector;
         }
 
-        Vector<T, N> scalar_multiply(const T& scalar) const {
+        constexpr Vector<T, N> scalar_multiply(const T& scalar) const {
             Vector<T, N> new_vector;
             for (int i = 0; i < N; ++i) {
                 new_vector.vector_[i] = vector_[i] * scalar;
@@ -82,54 +69,48 @@ class Vector {
             return new_vector;
         }
 
-        Vector<T, N> opposite() const {
+        constexpr Vector<T, N> opposite() const {
             return scalar_multiply(-1);
         }
 
-        Vector<T, N> unit() const {
+        constexpr Vector<T, N> unit() const {
             return scalar_multiply(1.0/magnitude());
         }
 
-        Vector<T, N> projection_unto(const Vector<T, N>& other) const {
+        constexpr Vector<T, N> projection_unto(const Vector<T, N>& other) const {
             return other.scalar_multiply((dot(other))/(other.dot(other)));
         }
 
-        Vector() {
+        constexpr Vector() {
             for (int i = 0; i < N; ++i) {
                 vector_[i] = 0;
             }
         }
 
-        explicit Vector(std::initializer_list<T> list) {
+        constexpr explicit Vector(std::initializer_list<T> list) {
             if (list.size() != N) {
                 throw std::invalid_argument("Number of elements in the initializer list doesn't match the dimension of the vector.");
             }
             std::copy(list.begin(), list.end(), vector_);
         }
 
-        Vector(const Vector<T, N>& other) {
+        constexpr Vector(const Vector<T, N>& other) {
             std::copy(other.vector_, other.vector_ + N, vector_);
         }
 
-        void operator=(const Vector<T, N>& other) {
+        constexpr void operator=(const Vector<T, N>& other) {
             std::copy(other.vector_, other.vector_ + N, vector_);
         }
 
-        Vector<T, N>& operator+=(const Vector<T, N>& rhs) {
-            for (int i = 0; i < N; ++i) {
-                vector_[i] += rhs.vector_[i];
-            }
-            return *this;
+        constexpr Vector<T, N> operator+=(const Vector<T, N>& rhs) const {
+            return add(rhs);
         }
 
-        Vector<T, N>& operator-=(const Vector<T, N>& rhs) {
-            for (int i = 0; i < N; ++i) {
-                vector_[i] -= rhs.vector_[i];
-            }
-            return *this;
+        constexpr Vector<T, N> operator-=(const Vector<T, N>& rhs) const {
+            return add(rhs.opposite());
         }
 
-        Vector<T, N> operator-() const {
+        constexpr Vector<T, N> operator-() const {
             return opposite();
         }
 };
@@ -182,9 +163,16 @@ class Vector3 : public Vector<T, 3> {
     public:
         using Vector<T, 3>::Vector;
 
-        T x = ([this]() { return this->at(0); })();
-        T y = ([this]() { return this->at(1); })();
-        T z = ([this]() { return this->at(2); })();
+        constexpr T x() const { return this->at(0); }
+        constexpr T y() const { return this->at(1); }
+        constexpr T z() const { return this->at(2); }
+
+        constexpr Vector3<T> cross(const Vector3<T>& other) const {
+            T _x = y()*other.z() - other.y()*z();
+            T _y = z()*other.x() - other.z()*x();
+            T _z = x()*other.y() - other.x()*y();
+            return Vector3{_x, _y, _z};
+        }
 };
 
 template <class T>
@@ -192,8 +180,8 @@ class Vector2 : public Vector<T, 2> {
     public:
         using Vector<T, 2>::Vector;
 
-        T x = ([this]() { return this->at(0); })();
-        T y = ([this]() { return this->at(1); })();
+        constexpr T x() const { return this->at(0); }
+        constexpr T y() const { return this->at(1); }
 };
 
 #endif

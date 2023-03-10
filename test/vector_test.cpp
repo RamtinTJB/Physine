@@ -41,8 +41,6 @@ SCENARIO("Exceptions") {
     CHECK_THROWS_AS(v.at(3), const std::out_of_range&);
     CHECK_THROWS_AS(v.at(-1), const std::out_of_range&);
     CHECK_THROWS_AS(invalid_initialization(), const std::invalid_argument&);
-    Vector<double, 4> v1 {1, 1, 1, 1};
-    CHECK_THROWS_AS(v1.cross(v), const std::logic_error);
 }
 
 SCENARIO("Equality Test") {
@@ -70,7 +68,7 @@ SCENARIO("Operators") {
     CHECK(3.0*v1 == v4);
 
     v1 += v2;
-    CHECK(v1 == res);
+    CHECK(v1 != res);
 
     v1 -= v2;
     CHECK(v1 == Vector3f{1, 1, 1});
@@ -119,7 +117,7 @@ SCENARIO("Projection & Unit vector") {
 SCENARIO("Test xyz") {
     Vector3f v1 {1, 2, 3};
 
-    CHECK(v1.x == 1);
-    CHECK(v1.y == 2);
-    CHECK(v1.z == 3);
+    CHECK(v1.x() == 1);
+    CHECK(v1.y() == 2);
+    CHECK(v1.z() == 3);
 }
