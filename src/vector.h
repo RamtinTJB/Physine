@@ -11,6 +11,7 @@
 
 template <class T, size_t N>
 class Vector {
+    static_assert(std::is_arithmetic<T>::value, "Vector requires an arithmetic data type");
     private:
         T* vector_ = new T[N];
 
@@ -96,6 +97,10 @@ class Vector {
 
         constexpr Vector(const Vector<T, N>& other) {
             std::copy(other.vector_, other.vector_ + N, vector_);
+        }
+
+        ~Vector() {
+            delete[] vector_;
         }
 
         constexpr void operator=(const Vector<T, N>& other) {
