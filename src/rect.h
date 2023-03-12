@@ -2,6 +2,8 @@
 #define PHYSINE_RECT_H_
 
 #include <type_traits>
+#include <initializer_list>
+#include <stdexcept>
 
 #include "common.h"
 
@@ -25,6 +27,13 @@ struct Rect {
         y = other.y;
         width = other.width;
         height = other.height;
+    }
+
+    constexpr explicit Rect(std::initializer_list<T> list) {
+        std::vector v(list);
+        if (list.size() != 4)
+            throw std::invalid_argument("Too many or too few arguments provided to construct Rect");
+        x = v[0]; y = v[1]; width = v[2]; height = v[3];
     }
 
     constexpr void operator=(const Rect<T>& other) {
