@@ -5,8 +5,9 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <algorithm>
+#include <vector>
 
-#include "common.h"
+#include "vector.h"
 
 template <class T>
 struct Rect {
