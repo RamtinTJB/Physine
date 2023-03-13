@@ -4,6 +4,7 @@
 #include <type_traits>
 #include <initializer_list>
 #include <stdexcept>
+#include <algorithm>
 
 #include "common.h"
 
@@ -55,8 +56,34 @@ struct Rect {
                 && y_ >= y && y_ <= y+height);
     }
 
-    // TODO Implement all member functions
-    constexpr bool intersects(const Rect<T>& other) const;
+    constexpr bool intersects(const Rect<T>& other) const {
+        return ((x < other.x+other.width) && (other.x < x+width)
+                && (y < other.y+other.height) && (other.y < y+height)); 
+    }
+
+    constexpr Rect<T> intersection(const Rect<T>& other) const {
+        if (intersects(other)) {
+            T x1 = std::max(x, other.x);
+            T y1 = std::max(y, other.y);
+            T x2 = std::min(x+width, other.x+other.width);
+            T y2 = std::min(y+height, other.y+other.height);
+            return Rect<T>{x1, y1, x2-x1, y2-y1};
+        } else {
+            return Rect<T>{0, 0, 0, 0};
+        }
+    }
+
+    constexpr Rect<T>& operator+=(const Vector2<T>& other) {
+        x += other[0];
+        y += other[1];
+        return *this;
+    }
+
+    constexpr Rect<T>& operator-=(const Vector2<T>& other) {
+        x -= other[0];
+        y -= other[1];
+        return *this;
+    }
 };
 
 template <class T>
@@ -68,6 +95,18 @@ inline bool operator==(const Rect<T>& lhs, const Rect<T>& rhs) {
 template <class T>
 inline bool operator!=(const Rect<T>& lhs, const Rect<T>& rhs) {
     return !(lhs == rhs);
+}
+
+template <class T>
+inline Rect<T> operator+(Rect<T> lhs, const Vector2<T>& rhs) {
+    lhs += rhs;
+    return lhs;
+}
+
+template <class T>
+inline Rect<T> operator-(Rect<T> lhs, const Vector2<T>& rhs) {
+    lhs -= rhs;
+    return lhs;
 }
 
 #endif
