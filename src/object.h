@@ -16,8 +16,21 @@ struct Object {
     double mass;
     Vector2f velocity;
 
-    Transform* transform;
-    Collider* collider;
+    Transform* transform = nullptr;
+    Collider* collider = nullptr;
+
+    Object() {
+        mass = 0.;
+        transform = new Transform();
+    }
+
+    void add_collider(Collider* c) { collider = c; }
+
+    ~Object() {
+        delete transform;
+        if (collider != nullptr)
+            delete collider;
+    }
 };
 
 #endif

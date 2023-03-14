@@ -26,3 +26,9 @@ void World::mainloop() {
         clock.restart();
     }
 }
+
+World::~World() {
+    for (Object* obj : objects_) {
+        delete obj;
+    }
+}

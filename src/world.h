@@ -21,6 +21,8 @@ class World {
         World();
         void add_object(Object* obj) { objects_.push_back(obj); }
         void mainloop();
+
+        ~World();
 };
 
 #endif
