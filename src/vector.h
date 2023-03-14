@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <cmath>
 #include <type_traits>
+#include <string>
+#include <iostream>
 
 #include "constants.h"
 
@@ -108,11 +110,17 @@ class Vector {
         }
 
         constexpr Vector<T, N> operator+=(const Vector<T, N>& rhs) const {
-            return add(rhs);
+            for (int i = 0; i < N; i++) {
+                vector_[i] += rhs[i];
+            }
+            return *this;
         }
 
         constexpr Vector<T, N> operator-=(const Vector<T, N>& rhs) const {
-            return add(rhs.opposite());
+            for (int i = 0; i < N; i++) {
+                vector_[i] -= rhs[i];
+            }
+            return *this;
         }
 
         constexpr Vector<T, N> operator-() const {
@@ -151,6 +159,11 @@ Vector<T, N> operator-(const Vector<T, N>& lhs, const Vector<T, N>& rhs) {
 template <class T, size_t N>
 Vector<T, N> operator*(const T& scalar, const Vector<T, N>& rhs) {
     return rhs.scalar_multiply(scalar);
+}
+
+template <class T, size_t N>
+Vector<T, N> operator*(const Vector<T, N>& lhs, const T& scalar) {
+    return lhs.scalar_multiply(scalar);
 }
 
 template <class T, size_t N>

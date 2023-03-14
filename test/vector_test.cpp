@@ -68,7 +68,7 @@ SCENARIO("Operators") {
     CHECK(3.0*v1 == v4);
 
     v1 += v2;
-    CHECK(v1 != res);
+    CHECK(v1 == res);
 
     v1 -= v2;
     CHECK(v1 == Vector3f{1, 1, 1});
