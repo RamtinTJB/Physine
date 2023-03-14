@@ -1,5 +1,5 @@
-#ifndef PHYSINE_OBJECT_H_
-#define PHYSINE_OBJECT_H_
+#ifndef PHYSINE_COLLIDER_H_
+#define PHYSINE_COLLIDER_H_
 
 #include "rect.h"
 #include "circle.h"
@@ -11,6 +11,7 @@ class Collider {
     public:
         virtual bool test_collision(const BoxCollider&) const = 0;
         virtual bool test_collision(const CircleCollider&) const = 0;
+        virtual ~Collider() = default;
 };
 
 class BoxCollider : public Collider {
@@ -19,6 +20,8 @@ class BoxCollider : public Collider {
 
         bool test_collision(const BoxCollider&) const;
         bool test_collision(const CircleCollider&) const;
+
+        ~BoxCollider() {}
 };
 
 class CircleCollider : public Collider {
@@ -27,6 +30,8 @@ class CircleCollider : public Collider {
 
         bool test_collision(const BoxCollider&) const;
         bool test_collision(const CircleCollider&) const;
+
+        ~CircleCollider() {}
 };
 
 #endif
