@@ -3,14 +3,16 @@
 
 #include "collider.h"
 #include "common.h"
+#include "drawable.h"
+#include "transform.h"
 
-class Collider;
+/* class Collider; */
 
-struct Transform {
-    Vector2f position;
-    Vector2f scale;
-    Vector2f rotation;
-};
+/* struct Transform { */
+/*     Vector2f position; */
+/*     Vector2f scale; */
+/*     Vector2f rotation; */
+/* }; */
 
 struct Object {
     double mass;
@@ -18,6 +20,7 @@ struct Object {
 
     Transform* transform = nullptr;
     Collider* collider = nullptr;
+    Drawable* drawable = nullptr;
 
     Object() {
         mass = 0.;
@@ -25,6 +28,8 @@ struct Object {
     }
 
     void add_collider(Collider* c) { collider = c; }
+
+    bool is_drawable() const { return drawable != nullptr; }
 
     ~Object() {
         delete transform;
