@@ -6,14 +6,6 @@
 #include "drawable.h"
 #include "transform.h"
 
-/* class Collider; */
-
-/* struct Transform { */
-/*     Vector2f position; */
-/*     Vector2f scale; */
-/*     Vector2f rotation; */
-/* }; */
-
 struct Object {
     double mass;
     Vector2f velocity;
@@ -35,6 +27,8 @@ struct Object {
         delete transform;
         if (collider != nullptr)
             delete collider;
+        if (drawable != nullptr)
+            delete drawable;
     }
 };
 

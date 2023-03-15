@@ -5,7 +5,7 @@
 
 struct Transform {
     Vector2f position;
-    Vector2f scale;
+    Vector2f scale {1, 1};
     Vector2f rotation;
 };
 
