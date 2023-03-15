@@ -12,3 +12,4 @@ _deps
 *.swp
 build/*
 extern/*
+.DS_Store
