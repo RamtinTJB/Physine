@@ -32,6 +32,10 @@ class Vector {
             return vector_[index];
         }
 
+        constexpr T x() const { return vector_[0]; }
+        constexpr T y() const { return vector_[1]; }
+        constexpr T z() const { return vector_[2]; }
+
         constexpr T& operator[](size_t index) const {
             return at(index);
         } 
@@ -54,6 +58,13 @@ class Vector {
                 result += vector_[i] * other.vector_[i];
             }
             return result;
+        }
+
+        constexpr Vector<T, 3> cross(const Vector<T, 3>& other) const {
+            T _x = y()*other.z() - other.y()*z();
+            T _y = z()*other.x() - other.z()*x();
+            T _z = x()*other.y() - other.x()*y();
+            return Vector{_x, _y, _z};
         }
 
         constexpr Vector<T, N> add(const Vector<T, N>&other) const {
@@ -175,31 +186,5 @@ inline std::ostream& operator<<(std::ostream& os, const Vector<T, N>& rhs) {
     os << rhs.at(N-1) << ">";
     return os;
 }
-
-template <class T>
-class Vector3 : public Vector<T, 3> {
-    public:
-        using Vector<T, 3>::Vector;
-
-        constexpr T x() const { return this->at(0); }
-        constexpr T y() const { return this->at(1); }
-        constexpr T z() const { return this->at(2); }
-
-        constexpr Vector3<T> cross(const Vector3<T>& other) const {
-            T _x = y()*other.z() - other.y()*z();
-            T _y = z()*other.x() - other.z()*x();
-            T _z = x()*other.y() - other.x()*y();
-            return Vector3{_x, _y, _z};
-        }
-};
-
-template <class T>
-class Vector2 : public Vector<T, 2> {
-    public:
-        using Vector<T, 2>::Vector;
-
-        constexpr T x() const { return this->at(0); }
-        constexpr T y() const { return this->at(1); }
-};
 
 #endif

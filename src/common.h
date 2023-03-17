@@ -3,7 +3,7 @@
 
 #include "vector.h"
 
-typedef Vector3<double> Vector3f;
-typedef Vector2<double> Vector2f;
+typedef Vector<double, 3> Vector3f;
+typedef Vector<double, 2> Vector2f;
 
 #endif

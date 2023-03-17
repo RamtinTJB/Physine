@@ -21,7 +21,7 @@ struct Circle {
     constexpr Circle(const T& x, const T& y, const T& radius) :
         x{x}, y{y}, radius{radius} {}
 
-    constexpr Circle(const Vector2<T>& position, const T& radius) :
+    constexpr Circle(const Vector2f& position, const T& radius) :
         x{position[0]}, y{position[1]}, radius{radius} {}
 
     constexpr Circle(const Circle<T>& other) {
@@ -46,7 +46,7 @@ struct Circle {
     constexpr T area() const { return PI*radius*radius; }
     constexpr T circumference() const { return 2*PI*radius; }
 
-    constexpr bool contains(const Vector2<T>& point) const {
+    constexpr bool contains(const Vector2f& point) const {
         return contains(point[0], point[1]);
     }
 
@@ -58,13 +58,13 @@ struct Circle {
         return std::sqrt((other.x-x)*(other.x-x) + (other.y-y)*(other.y-y)) < radius + other.radius;
     }
 
-    constexpr Circle<T>& operator+=(const Vector2<T>& other) {
+    constexpr Circle<T>& operator+=(const Vector2f& other) {
         x += other[0];
         y += other[1];
         return *this;
     }
 
-    constexpr Circle<T>& operator-=(const Vector2<T>& other) {
+    constexpr Circle<T>& operator-=(const Vector2f& other) {
         x -= other[0];
         y -= other[1];
         return *this;
@@ -82,13 +82,13 @@ inline bool operator!=(const Circle<T>& lhs, const Circle<T>& rhs) {
 }
 
 template <class T>
-inline Circle<T> operator+(Circle<T> lhs, const Vector2<T>& rhs) {
+inline Circle<T> operator+(Circle<T> lhs, const Vector2f rhs) {
     lhs += rhs;
     return lhs;
 }
 
 template <class T>
-inline Circle<T> operator-(Circle<T> lhs, const Vector2<T>& rhs) {
+inline Circle<T> operator-(Circle<T> lhs, const Vector2f& rhs) {
     lhs -= rhs;
     return lhs;
 }

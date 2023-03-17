@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "vector.h"
+#include "common.h"
 
 template <class T>
 struct Rect {
@@ -21,7 +21,7 @@ struct Rect {
     constexpr Rect(const T& x, const T& y, const T& width, const T& height) :
         x{x}, y{y}, width{width}, height{height} {}
 
-    constexpr Rect(const Vector2<T>& position, const Vector2<T>& size) :
+    constexpr Rect(const Vector2f& position, const Vector2f& size) :
         x{position[0]}, y{position[1]}, width{size[0]}, height{size[1]} {}
 
     constexpr Rect(const Rect<T>& other) {
@@ -48,7 +48,7 @@ struct Rect {
     constexpr T area() const { return width * height; }
     constexpr T perimeter() const { return 2*(width+height); }
 
-    constexpr bool contains(const Vector2<T>& point) const {
+    constexpr bool contains(const Vector2f& point) const {
         return contains(point[0], point[1]);
     }
 
@@ -74,13 +74,13 @@ struct Rect {
         }
     }
 
-    constexpr Rect<T>& operator+=(const Vector2<T>& other) {
+    constexpr Rect<T>& operator+=(const Vector2f& other) {
         x += other[0];
         y += other[1];
         return *this;
     }
 
-    constexpr Rect<T>& operator-=(const Vector2<T>& other) {
+    constexpr Rect<T>& operator-=(const Vector2f& other) {
         x -= other[0];
         y -= other[1];
         return *this;
@@ -99,13 +99,13 @@ inline bool operator!=(const Rect<T>& lhs, const Rect<T>& rhs) {
 }
 
 template <class T>
-inline Rect<T> operator+(Rect<T> lhs, const Vector2<T>& rhs) {
+inline Rect<T> operator+(Rect<T> lhs, const Vector2f& rhs) {
     lhs += rhs;
     return lhs;
 }
 
 template <class T>
-inline Rect<T> operator-(Rect<T> lhs, const Vector2<T>& rhs) {
+inline Rect<T> operator-(Rect<T> lhs, const Vector2f& rhs) {
     lhs -= rhs;
     return lhs;
 }
