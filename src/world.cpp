@@ -4,29 +4,30 @@
 World::World() {
     clock.restart();
     graphics = new Graphics(1500, 1500);
+    solver = new Solver();
 }
 
 void World::update_velocities(double dt) {
     for (Object* obj : objects_) {
-        if (gravity_)
+        if (obj->has_gravity && obj->is_kinetic)
             obj->velocity += g*dt;
     }
 }
 
 void World::update_transforms(double dt) {
     for (Object* obj : objects_) {
-        obj->transform->position += obj->velocity * dt;
+        if (obj->is_kinetic)
+            obj->transform->position += obj->velocity * dt;
     }
 }
 
 void World::check_collisions() {
     for (Object* obj1 : objects_) {
         for (Object* obj2 : objects_) {
-            if (obj1 == obj2) continue;
+            if (obj1 == obj2) break;
             if (obj1->collider != nullptr && obj2->collider != nullptr) {
                 if (obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider))) {
-                    // TODO Resolve Collision
-                    obj1->velocity = Vector2f{-obj1->velocity[0], -obj1->velocity[1]};
+                    solver->solve(obj1, obj2);
                 }
             }
         }

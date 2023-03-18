@@ -7,14 +7,16 @@
 #include "common.h"
 #include "clock.h"
 #include "graphics.h"
+#include "collision_solver.h"
 
-const Vector2f g {0, 200};
+const Vector2f g {0, 1000};
 
 class World {
     private:
         std::vector<Object*> objects_;
         Clock clock;
         Graphics* graphics = nullptr;
+        Solver* solver = nullptr;
 
         bool gravity_ = true;
 

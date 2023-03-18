@@ -8,7 +8,10 @@
 
 struct Object {
     double mass;
+    bool has_gravity = true;
+    bool is_kinetic = true;
     Vector2f velocity;
+    
 
     Transform* transform = nullptr;
     Collider* collider = nullptr;
