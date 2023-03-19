@@ -47,6 +47,9 @@ struct Rect {
 
     constexpr T area() const { return width * height; }
     constexpr T perimeter() const { return 2*(width+height); }
+    Vector2f center() const {
+        return Vector2f {x+width/2, y+height/2};
+    }
 
     constexpr bool contains(const Vector2f& point) const {
         return contains(point[0], point[1]);
