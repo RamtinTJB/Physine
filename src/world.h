@@ -23,6 +23,7 @@ class World {
         void update_velocities(double dt);
         void update_transforms(double dt);
 
+        void check_collision(Object* obj1, Object* obj2);
         void check_collisions();
 
         void draw_objects();

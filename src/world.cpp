@@ -1,5 +1,8 @@
 #include "world.h"
+
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 World::World() {
     clock.restart();
@@ -21,15 +24,24 @@ void World::update_transforms(double dt) {
     }
 }
 
+void World::check_collision(Object* obj1, Object* obj2) {
+    if (obj1->collider == nullptr || obj2->collider == nullptr) return;
+    if (obj2->collider->type() == ColliderType::CIRCLE) {
+        if (obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider))) {
+            solver->solve(obj1, obj2);
+        }
+    } else if (obj2->collider->type() == ColliderType::BOX) {
+        if (obj1->collider->test_collision(dynamic_cast<BoxCollider*>(obj2->collider))) {
+            solver->solve(obj1, obj2);
+        }
+    }
+}
+
 void World::check_collisions() {
     for (Object* obj1 : objects_) {
         for (Object* obj2 : objects_) {
             if (obj1 == obj2) break;
-            if (obj1->collider != nullptr && obj2->collider != nullptr) {
-                if (obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider))) {
-                    solver->solve(obj1, obj2);
-                }
-            }
+            check_collision(obj1, obj2);
         }
     }
 }
@@ -43,6 +55,7 @@ void World::draw_objects() {
 }
 
 void World::mainloop() {
+    clock.restart();
     while (true) {
         if (graphics->has_closed()) return;
         double dt = clock.delta_time();
@@ -54,6 +67,8 @@ void World::mainloop() {
 
         draw_objects();
         graphics->draw_objects(objects_);
+        //using namespace std::chrono_literals;
+        //std::this_thread::sleep_for(100ms);
     }
 }
 

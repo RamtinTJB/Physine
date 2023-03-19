@@ -1,12 +1,31 @@
 #include "collider.h"
-#include <iostream>
+
+#include "debug.h"
 
 bool BoxCollider::test_collision(const BoxCollider* bc) const {
-    return box.intersects(bc->box);
+    // TODO Fix this
+    //return box.intersects(bc->box);
+    return false;
 }
 
 bool BoxCollider::test_collision(const CircleCollider* cc) const {
-    // TODO Implement circle v box collision
+    Transform* circle_t = cc->get_transform();
+    Vector2f rect_center = transform->position;
+    Vector2f rect_size = transform->scale;
+    
+    if (std::abs(circle_t->position.x() - rect_center.x()) < rect_size.x()/2) {
+        if (std::abs(circle_t->position.y() - rect_center.y()) <
+                circle_t->scale.x() + rect_size.y()/2) {
+            return true;
+        }
+    }
+    if (std::abs(circle_t->position.y() - rect_center.y()) < rect_size.y()/2) {
+        if (std::abs(circle_t->position.x() - rect_center.x()) <
+                circle_t->scale.x() + rect_size.x()/2) {
+            return true;
+        }
+    }
+    // TODO Implement corner collisions
     return false;
 }
 

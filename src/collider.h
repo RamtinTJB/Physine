@@ -1,9 +1,14 @@
 #ifndef PHYSINE_COLLIDER_H_
 #define PHYSINE_COLLIDER_H_
 
+#include <cmath>
+#include <iostream>
+
 #include "rect.h"
 #include "circle.h"
 #include "transform.h"
+
+enum class ColliderType { CIRCLE, BOX };
 
 class BoxCollider;
 class CircleCollider;
@@ -17,13 +22,18 @@ class Collider {
         virtual ~Collider() = default;
 
         Transform* get_transform() const { return transform; }
+        ColliderType type() const { return type_; }
 
+    protected:
         Transform* transform;
+        ColliderType type_;
 };
 
 class BoxCollider : public Collider {
     public:
-        Rect<double> box;
+        BoxCollider(Transform* t) : Collider(t) {
+            type_ = ColliderType::BOX;
+        }
 
         bool test_collision(const Collider*) const { return false; }
         bool test_collision(const BoxCollider*) const;
@@ -34,7 +44,9 @@ class BoxCollider : public Collider {
 
 class CircleCollider : public Collider {
     public:
-        using Collider::Collider;
+        CircleCollider(Transform* t) : Collider(t) {
+            type_ = ColliderType::CIRCLE;
+        }
 
         bool test_collision(const Collider*) const { return false; }
         bool test_collision(const BoxCollider*) const;
