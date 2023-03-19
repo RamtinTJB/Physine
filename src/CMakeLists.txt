@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project (Physine VERSION 1.0 LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME} main.cpp collider.cpp world.cpp
-    circle_shape.cpp graphics.cpp collision_solver.cpp)
+    circle_shape.cpp rectangle_shape.cpp graphics.cpp collision_solver.cpp debug.cpp)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
