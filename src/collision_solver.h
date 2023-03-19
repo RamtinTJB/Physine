@@ -3,10 +3,11 @@
 
 #include "object.h"
 #include "vector.h"
+#include "collision.h"
 
 class Solver {
     public:
-        void solve(Object* obj1, Object* obj2) const;
+        void solve(const Collision& collision) const;
 };
 
 #endif

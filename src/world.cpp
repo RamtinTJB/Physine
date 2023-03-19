@@ -28,11 +28,11 @@ void World::check_collision(Object* obj1, Object* obj2) {
     if (obj1->collider == nullptr || obj2->collider == nullptr) return;
     if (obj2->collider->type() == ColliderType::CIRCLE) {
         if (obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider))) {
-            solver->solve(obj1, obj2);
+            collisions_.push_back(Collision(obj1, obj2));
         }
     } else if (obj2->collider->type() == ColliderType::BOX) {
         if (obj1->collider->test_collision(dynamic_cast<BoxCollider*>(obj2->collider))) {
-            solver->solve(obj1, obj2);
+            collisions_.push_back(Collision(obj1, obj2));
         }
     }
 }
@@ -44,6 +44,13 @@ void World::check_collisions() {
             check_collision(obj1, obj2);
         }
     }
+}
+
+void World::solve_collisions() {
+    for (Collision c : collisions_) {
+        solver->solve(c);
+    }
+    collisions_.clear();
 }
 
 void World::draw_objects() {
@@ -64,6 +71,7 @@ void World::mainloop() {
         update_velocities(dt);
         update_transforms(dt);
         check_collisions();
+        solve_collisions();
 
         draw_objects();
         graphics->draw_objects(objects_);

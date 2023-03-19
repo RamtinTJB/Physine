@@ -2,7 +2,9 @@
 
 #include "collision_solver.h"
 
-void Solver::solve(Object* obj1, Object* obj2) const {
+void Solver::solve(const Collision& collision) const {
+    Object* obj1 = collision.obj1;
+    Object* obj2 = collision.obj2;
     double total_mass = obj1->mass + obj2->mass;
     Vector2f delta_x = obj2->transform->position - obj1->transform->position;
     Vector2f delta_v = obj2->velocity - obj1->velocity;

@@ -8,12 +8,14 @@
 #include "clock.h"
 #include "graphics.h"
 #include "collision_solver.h"
+#include "collision.h"
 
 const Vector2f g {0, 1000};
 
 class World {
     private:
         std::vector<Object*> objects_;
+        std::vector<Collision> collisions_;
         Clock clock;
         Graphics* graphics = nullptr;
         Solver* solver = nullptr;
@@ -25,6 +27,7 @@ class World {
 
         void check_collision(Object* obj1, Object* obj2);
         void check_collisions();
+        void solve_collisions();
 
         void draw_objects();
     
