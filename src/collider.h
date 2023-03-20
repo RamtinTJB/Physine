@@ -8,13 +8,14 @@
 #include "circle.h"
 #include "transform.h"
 
-enum class ColliderType { CIRCLE, BOX };
+enum class ColliderType { GENERIC, CIRCLE, BOX };
 
 class BoxCollider;
 class CircleCollider;
 
 class Collider {
     public:
+        typedef Collider* type;
         Collider(Transform* t) : transform{t} {}
         virtual bool test_collision(const Collider*) const = 0;
         virtual bool test_collision(const BoxCollider*) const = 0;
@@ -22,7 +23,7 @@ class Collider {
         virtual ~Collider() = default;
 
         Transform* get_transform() const { return transform; }
-        ColliderType type() const { return type_; }
+        ColliderType get_type() const { return type_; }
 
     protected:
         Transform* transform;
@@ -31,6 +32,7 @@ class Collider {
 
 class BoxCollider : public Collider {
     public:
+        typedef BoxCollider* type;
         BoxCollider(Transform* t) : Collider(t) {
             type_ = ColliderType::BOX;
         }
@@ -44,6 +46,7 @@ class BoxCollider : public Collider {
 
 class CircleCollider : public Collider {
     public:
+        typedef CircleCollider* type;
         CircleCollider(Transform* t) : Collider(t) {
             type_ = ColliderType::CIRCLE;
         }
@@ -53,6 +56,18 @@ class CircleCollider : public Collider {
         bool test_collision(const CircleCollider*) const;
 
         ~CircleCollider() {}
+};
+
+template <ColliderType T> struct CollType {
+    using type = Collider::type;
+};
+
+template <> struct CollType<ColliderType::BOX> {
+    using type = BoxCollider::type;
+};
+
+template <> struct CollType<ColliderType::CIRCLE> {
+    using type = CircleCollider::type;
 };
 
 #endif
