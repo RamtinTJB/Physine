@@ -2,7 +2,7 @@
 
 #include "collision_solver.h"
 
-void Solver::solve(const Collision& collision) const {
+void VelocitySolver::solve(const Collision& collision) const {
     Object* obj1 = collision.obj1;
     Object* obj2 = collision.obj2;
     double total_mass = obj1->mass + obj2->mass;

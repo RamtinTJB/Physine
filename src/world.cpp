@@ -7,7 +7,7 @@
 World::World() {
     clock.restart();
     graphics = new Graphics(1500, 1500);
-    solver = new Solver();
+    solvers_.push_back(new VelocitySolver());
 }
 
 void World::update_velocities(double dt) {
@@ -26,11 +26,11 @@ void World::update_transforms(double dt) {
 
 void World::check_collision(Object* obj1, Object* obj2) {
     if (obj1->collider == nullptr || obj2->collider == nullptr) return;
-    if (obj2->collider->type() == ColliderType::CIRCLE) {
+    if (obj2->collider->get_type() == ColliderType::CIRCLE) {
         if (obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider))) {
             collisions_.push_back(Collision(obj1, obj2));
         }
-    } else if (obj2->collider->type() == ColliderType::BOX) {
+    } else if (obj2->collider->get_type() == ColliderType::BOX) {
         if (obj1->collider->test_collision(dynamic_cast<BoxCollider*>(obj2->collider))) {
             collisions_.push_back(Collision(obj1, obj2));
         }
@@ -48,7 +48,9 @@ void World::check_collisions() {
 
 void World::solve_collisions() {
     for (Collision c : collisions_) {
-        solver->solve(c);
+        for (Solver* solver: solvers_) {
+            solver->solve(c);
+        }
     }
     collisions_.clear();
 }
@@ -75,13 +77,15 @@ void World::mainloop() {
 
         draw_objects();
         graphics->draw_objects(objects_);
-        //using namespace std::chrono_literals;
-        //std::this_thread::sleep_for(100ms);
     }
 }
 
 World::~World() {
     for (Object* obj : objects_) {
         delete obj;
+    }
+    if (graphics != nullptr) delete graphics;
+    for (Solver* solver: solvers_) {
+        delete solver;
     }
 }

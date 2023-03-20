@@ -16,9 +16,10 @@ class World {
     private:
         std::vector<Object*> objects_;
         std::vector<Collision> collisions_;
+        std::vector<Solver*> solvers_;
+
         Clock clock;
         Graphics* graphics = nullptr;
-        Solver* solver = nullptr;
 
         bool gravity_ = true;
 

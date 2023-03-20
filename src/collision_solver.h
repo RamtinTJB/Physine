@@ -7,7 +7,13 @@
 
 class Solver {
     public:
-        void solve(const Collision& collision) const;
+        virtual void solve(const Collision& collision) const = 0;
+        virtual ~Solver() = default;
+};
+
+class VelocitySolver : public Solver {
+    public:
+        void solve(const Collision& collision) const override;
 };
 
 #endif
