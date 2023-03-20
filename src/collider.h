@@ -7,6 +7,8 @@
 #include "rect.h"
 #include "circle.h"
 #include "transform.h"
+#include "vector.h"
+#include "collision_points.h"
 
 enum class ColliderType { GENERIC, CIRCLE, BOX };
 
@@ -17,9 +19,9 @@ class Collider {
     public:
         typedef Collider* type;
         Collider(Transform* t) : transform{t} {}
-        virtual bool test_collision(const Collider*) const = 0;
-        virtual bool test_collision(const BoxCollider*) const = 0;
-        virtual bool test_collision(const CircleCollider*) const = 0;
+        virtual CollisionPoints test_collision(const Collider*) const = 0;
+        virtual CollisionPoints test_collision(const BoxCollider*) const = 0;
+        virtual CollisionPoints test_collision(const CircleCollider*) const = 0;
         virtual ~Collider() = default;
 
         Transform* get_transform() const { return transform; }
@@ -37,9 +39,9 @@ class BoxCollider : public Collider {
             type_ = ColliderType::BOX;
         }
 
-        bool test_collision(const Collider*) const { return false; }
-        bool test_collision(const BoxCollider*) const;
-        bool test_collision(const CircleCollider*) const;
+        CollisionPoints test_collision(const Collider*) const { return CollisionPoints(); }
+        CollisionPoints test_collision(const BoxCollider*) const;
+        CollisionPoints test_collision(const CircleCollider*) const;
 
         ~BoxCollider() {}
 };
@@ -51,9 +53,9 @@ class CircleCollider : public Collider {
             type_ = ColliderType::CIRCLE;
         }
 
-        bool test_collision(const Collider*) const { return false; }
-        bool test_collision(const BoxCollider*) const;
-        bool test_collision(const CircleCollider*) const;
+        CollisionPoints test_collision(const Collider*) const { return CollisionPoints(); }
+        CollisionPoints test_collision(const BoxCollider*) const;
+        CollisionPoints test_collision(const CircleCollider*) const;
 
         ~CircleCollider() {}
 };
