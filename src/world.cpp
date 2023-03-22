@@ -26,29 +26,23 @@ void World::update_transforms(double dt) {
 
 void World::check_collision(Object* obj1, Object* obj2) {
     if (obj1->collider == nullptr || obj2->collider == nullptr) return;
-    CollisionPoints col;
+    CollisionPoints col_pts;
     if (obj2->collider->get_type() == ColliderType::CIRCLE) {
-        col = obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider));
-        //if (col.has_collision) collisions_.push_back(col);
-        /* if (obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider))) { */
-        /*     collisions_.push_back(Collision(obj1, obj2)); */
-        /* } */
+        col_pts = obj1->collider->test_collision(dynamic_cast<CircleCollider*>(obj2->collider));
     } else if (obj2->collider->get_type() == ColliderType::BOX) {
-        col = obj1->collider->test_collision(dynamic_cast<BoxCollider*>(obj2->collider));
-        //if (col.has_collision) collisions_.push_back(col);
-        /* if (obj1->collider->test_collision(dynamic_cast<BoxCollider*>(obj2->collider))) { */
-        /*     collisions_.push_back(Collision(obj1, obj2)); */
-        /* } */
+        col_pts = obj1->collider->test_collision(dynamic_cast<BoxCollider*>(obj2->collider));
     }
-    if (col.has_collision) {
-        collisions_.push_back(Collision(obj1, obj2, col));
+    if (col_pts.has_collision) {
+        collisions_.push_back(Collision(obj1, obj2, col_pts));
     }
 }
 
 void World::check_collisions() {
-    for (Object* obj1 : objects_) {
-        for (Object* obj2 : objects_) {
-            if (obj1 == obj2) break;
+    for (int i = 0; i < objects_.size(); ++i) {
+        for (int j = i; j < objects_.size(); ++j) {
+            Object* obj1 = objects_[i];
+            Object* obj2 = objects_[j];
+            if (obj1 == obj2) continue;
             check_collision(obj1, obj2);
         }
     }

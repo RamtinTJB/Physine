@@ -19,12 +19,14 @@ CollisionPoints BoxCollider::test_collision(const CircleCollider* cc) const {
         if (std::abs(circle_t->position.y() - rect_center.y()) <
                 circle_t->scale.x() + rect_size.y()/2) {
             col.has_collision = true;
+            col.normal = Vector2f{0, circle_t->position.y() - rect_center.y()};
         }
     }
     if (std::abs(circle_t->position.y() - rect_center.y()) < rect_size.y()/2) {
         if (std::abs(circle_t->position.x() - rect_center.x()) <
                 circle_t->scale.x() + rect_size.x()/2) {
             col.has_collision = true;
+            col.normal = Vector2f{circle_t->position.x() - rect_center.x(), 0};
         }
     }
     // TODO Implement corner collisions
@@ -41,7 +43,7 @@ CollisionPoints CircleCollider::test_collision(const CircleCollider* cc) const {
     Circle<double> other_circle(cc->get_transform()->position, cc->get_transform()->scale.x());
     if (this_circle.intersects(other_circle)) {
         col.has_collision = true;
+        col.normal = Vector2f{other_circle.x - this_circle.x, other_circle.y - this_circle.y};
     }
-    //return this_circle.intersects(other_circle);
     return col;
 }
