@@ -2,7 +2,7 @@
 
 void CircleShape::render(const Transform* transform) {
     render_texture_.create(2*transform->scale.x(), 2*transform->scale.x());
-    render_texture_.clear(TRANSPARENT);
+    render_texture_.clear(Color::TRANSPARENT);
     sf::CircleShape c;
     c.setRadius(transform->scale[0]);
     c.setFillColor(color_);
