@@ -35,6 +35,8 @@ void World::check_collision(Object* obj1, Object* obj2) {
     }
     if (col_pts.has_collision) {
         collisions_.push_back(Collision(obj1, obj2, col_pts));
+        obj1->collision_happened(obj2);
+        obj2->collision_happened(obj1);
     }
 }
 

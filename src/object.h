@@ -3,12 +3,14 @@
 
 #include <string>
 #include <unordered_map>
+#include <functional>
 
 #include "collider.h"
 #include "common.h"
 #include "drawable.h"
 #include "transform.h"
 #include "utils.h"
+#include "callback_list.h"
 
 class Object {
     public:
@@ -38,6 +40,12 @@ class Object {
             return "";
         }
 
+        void add_collision_listener(const std::function<void(Object*)>& collision_listener) {
+            collision_listeners_.add_callback(collision_listener);
+        }
+
+        void collision_happened(Object* other) const { collision_listeners_.execute_all(other); }
+
         bool is_drawable() const { return drawable != nullptr; }
 
         ~Object() {
@@ -50,6 +58,7 @@ class Object {
     
     private:
         std::unordered_map<std::string, std::string> custom_properties_;
+        CallbackList<Object*> collision_listeners_;
 };
 
 #endif
