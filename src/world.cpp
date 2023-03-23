@@ -1,4 +1,5 @@
 #include "world.h"
+#include "utils.h"
 
 #include <iostream>
 #include <thread>
@@ -63,6 +64,17 @@ void World::draw_objects() {
             obj->drawable->render(obj->transform);
         }
     }
+}
+
+void World::add_object(Object* obj) {
+    if (map_contains(objects_map_, obj->name)) throw std::invalid_argument("Duplicate object name not allowed");
+    objects_.push_back(obj);
+    objects_map_[obj->name] = obj;
+}
+
+Object* World::get_object_by_name(const std::string& name) {
+    if (map_contains(objects_map_, name)) return objects_map_[name];
+    return nullptr;
 }
 
 void World::mainloop() {
