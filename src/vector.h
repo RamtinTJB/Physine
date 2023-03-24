@@ -91,6 +91,10 @@ class Vector {
             return scalar_multiply(1.0/magnitude());
         }
 
+        constexpr T distance(const Vector<T, N>& other) const {
+            return std::sqrt((x()-other.x())*(x()-other.x())+(y()-other.y())*(y()-other.y()));
+        }
+
         constexpr Vector<T, N> projection_unto(const Vector<T, N>& other) const {
             return other.scalar_multiply((dot(other))/(other.dot(other)));
         }

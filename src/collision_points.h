@@ -5,6 +5,7 @@
 
 struct CollisionPoints {
     Vector2f normal;
+    double overlap_length;
     bool has_collision = false;
 
     CollisionPoints() = default;

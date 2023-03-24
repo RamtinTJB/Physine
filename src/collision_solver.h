@@ -16,4 +16,9 @@ class VelocitySolver : public Solver {
         void solve(const Collision& collision) const override;
 };
 
+class PositionSolver : public Solver {
+    public:
+        void solve(const Collision& collision) const override;
+};
+
 #endif

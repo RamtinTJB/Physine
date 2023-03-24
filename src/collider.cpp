@@ -10,16 +10,22 @@ CollisionPoints BoxCollider::test_collision(const BoxCollider* bc) const {
 
 CollisionPoints BoxCollider::test_collision(const CircleCollider* cc) const {
     Transform* circle_t = cc->get_transform();
+    Circle<double> other_circle(circle_t->position, circle_t->scale.x());
     Vector2f rect_center = transform->position;
     Vector2f rect_size = transform->scale;
 
     CollisionPoints col;
     
-    if (std::abs(circle_t->position.x() - rect_center.x()) < rect_size.x()/2) {
-        if (std::abs(circle_t->position.y() - rect_center.y()) <
-                circle_t->scale.x() + rect_size.y()/2) {
+    if (std::abs(other_circle.x - rect_center.x()) < rect_size.x()/2) {
+        if (std::abs(other_circle.y - rect_center.y()) <
+                other_circle.radius + rect_size.y()/2) {
             col.has_collision = true;
-            col.normal = Vector2f{0, circle_t->position.y() - rect_center.y()};
+            col.normal = Vector2f{0, other_circle.y - rect_center.y()};
+            double total_length = rect_size.y()/2 + other_circle.radius;
+            double center_distance = other_circle.center().distance(
+                    Vector2f{other_circle.x, rect_center.y()}
+                    );
+            col.overlap_length = total_length - center_distance;
         }
     }
     if (std::abs(circle_t->position.y() - rect_center.y()) < rect_size.y()/2) {
@@ -27,6 +33,11 @@ CollisionPoints BoxCollider::test_collision(const CircleCollider* cc) const {
                 circle_t->scale.x() + rect_size.x()/2) {
             col.has_collision = true;
             col.normal = Vector2f{circle_t->position.x() - rect_center.x(), 0};
+            double total_length = rect_size.x()/2 + other_circle.radius;
+            double center_distance = other_circle.center().distance(
+                    Vector2f{rect_center.x(), other_circle.y}
+                    );
+            col.overlap_length = total_length - center_distance;
         }
     }
     // TODO Implement corner collisions
@@ -44,6 +55,9 @@ CollisionPoints CircleCollider::test_collision(const CircleCollider* cc) const {
     if (this_circle.intersects(other_circle)) {
         col.has_collision = true;
         col.normal = Vector2f{other_circle.x - this_circle.x, other_circle.y - this_circle.y};
+        double center_distance = this_circle.center().distance(other_circle.center());
+        double total_radius = this_circle.radius + other_circle.radius;
+        col.overlap_length = total_radius - center_distance;
     }
     return col;
 }

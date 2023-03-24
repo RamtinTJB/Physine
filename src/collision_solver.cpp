@@ -34,3 +34,18 @@ void VelocitySolver::solve(const Collision& collision) const {
     if (obj2->is_kinetic)
         obj2->velocity = v2;
 }
+
+void PositionSolver::solve(const Collision& collision) const {
+    Object* obj1 = collision.obj1;
+    Object* obj2 = collision.obj2;
+    Vector2f normal = collision.points.overlap_length*collision.points.normal.unit();
+    
+    if (!obj1->is_kinetic) {
+        obj2->transform->position += normal;
+    } else if (!obj2->is_kinetic) {
+        obj1->transform->position += normal.opposite();
+    } else {
+        obj1->transform->position += -0.5*normal;
+        obj2->transform->position += 0.5*normal;
+    }
+}

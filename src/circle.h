@@ -45,6 +45,7 @@ struct Circle {
 
     constexpr T area() const { return PI*radius*radius; }
     constexpr T circumference() const { return 2*PI*radius; }
+    Vector2f center() const { return Vector2f{x, y}; }
 
     constexpr bool contains(const Vector2f& point) const {
         return contains(point[0], point[1]);
