@@ -14,6 +14,7 @@ class Drawable {
 
         sf::RenderTexture& get_texture() { return render_texture_; }
         void set_color(const Color& color) { color_ = color; }
+        Color get_color() const { return color_; }
 
         virtual ~Drawable() = default;
 
