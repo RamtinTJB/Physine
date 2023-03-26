@@ -22,15 +22,17 @@ class Object {
         Vector2f velocity;
         
         Transform* transform = nullptr;
-        Collider* collider = nullptr;
+        AbstractCollider* collider = nullptr;
         Drawable* drawable = nullptr;
 
         Object() = delete;
         Object(const std::string& name) : name{name}, mass{0.} {
             transform = new Transform();
         }
+        Object(const std::string& name, Transform* transform) :
+            name{name}, transform{transform} {}
 
-        void add_collider(Collider* c) { collider = c; }
+        void add_collider(AbstractCollider* c) { collider = c; }
         void add_property(const std::string& key, const std::string& value) {
             custom_properties_[key] = value; 
         }

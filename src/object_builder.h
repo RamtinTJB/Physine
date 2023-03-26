@@ -12,6 +12,8 @@ class ObjectBuilder {
             obj = new Object(name);
         }
 
+        ObjectBuilder(Object* obj) : obj{obj} {}
+
         ObjectBuilder drawable(Drawable* drawable_) {
             obj->drawable = drawable_;
             return *this;
@@ -28,6 +30,11 @@ class ObjectBuilder {
             return *this;
         }
 
+        ObjectBuilder collider(AbstractCollider* c) {
+            obj->collider = c;
+            return *this;
+        }
+
         ObjectBuilder position(const Vector2f& p) {
             obj->transform->position = p;
             return *this;
@@ -35,6 +42,11 @@ class ObjectBuilder {
 
         ObjectBuilder scale(const Vector2f& s) {
             obj->transform->scale = s;
+            return *this;
+        }
+
+        ObjectBuilder rotation(const Vector2f r) {
+            obj->transform->rotation = r;
             return *this;
         }
 
@@ -56,6 +68,16 @@ class ObjectBuilder {
         ObjectBuilder kinetic(bool k) {
             obj->is_kinetic = k;
             return *this;
+        }
+
+        static ObjectBuilder duplicate(const std::string& new_name, const Object* const obj) {
+            Object* dup_obj = new Object(new_name, new Transform(*obj->transform));
+            return ObjectBuilder(dup_obj)
+                .drawable(obj->drawable->clone())
+                .collider(obj->collider->clone(dup_obj->transform))
+                .mass(obj->mass)
+                .gravity(obj->has_gravity)
+                .kinetic(obj->is_kinetic);
         }
 
         Object* build() {

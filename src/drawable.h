@@ -18,18 +18,29 @@ class Drawable {
 
         virtual ~Drawable() = default;
 
+        virtual Drawable* clone() const = 0;
+
     protected:
         sf::RenderTexture render_texture_;
         Color color_;
 };
 
-class RectangleShape : public Drawable {
+template <class Derived>
+class DrawableDerivationHelper : public Drawable {
+    virtual Drawable* clone() const override {
+        Derived* derived = new Derived();
+        derived->set_color(this->get_color());
+        return derived;
+    }
+};
+
+class RectangleShape : public DrawableDerivationHelper<RectangleShape> {
     public:
         void render(const Transform* transform) override;
         Vector2f get_top_left(const Transform* t) const override;
 };
 
-class CircleShape : public Drawable {
+class CircleShape : public DrawableDerivationHelper<CircleShape> {
     public:
         void render(const Transform* transform) override;
         Vector2f get_top_left(const Transform* t) const override;

@@ -15,14 +15,15 @@ enum class ColliderType { GENERIC, CIRCLE, BOX };
 class BoxCollider;
 class CircleCollider;
 
-class Collider {
+class AbstractCollider {
     public:
-        typedef Collider* type;
-        Collider(Transform* t) : transform{t} {}
-        virtual CollisionPoints test_collision(const Collider*) const = 0;
+        AbstractCollider(Transform* t) : transform{t} {}
+        virtual CollisionPoints test_collision(const AbstractCollider*) const = 0;
         virtual CollisionPoints test_collision(const BoxCollider*) const = 0;
         virtual CollisionPoints test_collision(const CircleCollider*) const = 0;
-        virtual ~Collider() = default;
+        virtual ~AbstractCollider() = default;
+
+        virtual AbstractCollider* clone(Transform* transform) const = 0;
 
         Transform* get_transform() const { return transform; }
         ColliderType get_type() const { return type_; }
@@ -32,44 +33,41 @@ class Collider {
         ColliderType type_;
 };
 
-class BoxCollider : public Collider {
+template <class Derived>
+class Collider : public AbstractCollider {
+    public:
+        Collider(Transform* t) : AbstractCollider(t) {}
+        virtual AbstractCollider* clone(Transform* transform) const override {
+            return new Derived(transform); 
+        }
+};
+
+class BoxCollider : public Collider<BoxCollider> {
     public:
         typedef BoxCollider* type;
         BoxCollider(Transform* t) : Collider(t) {
             type_ = ColliderType::BOX;
         }
 
-        CollisionPoints test_collision(const Collider*) const { return CollisionPoints(); }
+        CollisionPoints test_collision(const AbstractCollider*) const { return CollisionPoints(); }
         CollisionPoints test_collision(const BoxCollider*) const;
         CollisionPoints test_collision(const CircleCollider*) const;
 
         ~BoxCollider() {}
 };
 
-class CircleCollider : public Collider {
+class CircleCollider : public Collider<CircleCollider> {
     public:
         typedef CircleCollider* type;
         CircleCollider(Transform* t) : Collider(t) {
             type_ = ColliderType::CIRCLE;
         }
 
-        CollisionPoints test_collision(const Collider*) const { return CollisionPoints(); }
+        CollisionPoints test_collision(const AbstractCollider*) const { return CollisionPoints(); }
         CollisionPoints test_collision(const BoxCollider*) const;
         CollisionPoints test_collision(const CircleCollider*) const;
 
         ~CircleCollider() {}
-};
-
-template <ColliderType T> struct CollType {
-    using type = Collider::type;
-};
-
-template <> struct CollType<ColliderType::BOX> {
-    using type = BoxCollider::type;
-};
-
-template <> struct CollType<ColliderType::CIRCLE> {
-    using type = CircleCollider::type;
 };
 
 #endif
