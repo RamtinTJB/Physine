@@ -12,10 +12,16 @@ World::World() {
     solvers_.push_back(new VelocitySolver());
 }
 
+void World::add_air_resistance(Object* obj, double dt) {
+    obj->velocity -= (0.5*0.05*dt/obj->mass)*obj->velocity.dot(obj->velocity)*obj->velocity.unit();
+}
+
 void World::update_velocities(double dt) {
     for (Object* obj : objects_) {
-        if (obj->has_gravity && obj->is_kinetic)
+        if (obj->has_gravity && obj->is_kinetic) {
             obj->velocity += g*dt;
+            add_air_resistance(obj, dt);
+        }
     }
 }
 

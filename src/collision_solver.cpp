@@ -30,9 +30,9 @@ void VelocitySolver::solve(const Collision& collision) const {
             (delta_x.magnitude()*delta_x.magnitude()))*delta_x;
     
     if (obj1->is_kinetic)
-        obj1->velocity = v1;
+        obj1->velocity = v1*0.9;
     if (obj2->is_kinetic)
-        obj2->velocity = v2;
+        obj2->velocity = v2*0.9;
 }
 
 void PositionSolver::solve(const Collision& collision) const {

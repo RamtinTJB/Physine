@@ -25,6 +25,8 @@ class World {
 
         bool gravity_ = true;
 
+        void add_air_resistance(Object* obj, double dt);
+
         void update_velocities(double dt);
         void update_transforms(double dt);
 
