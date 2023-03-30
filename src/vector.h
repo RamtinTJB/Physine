@@ -40,13 +40,17 @@ class Vector {
             return at(index);
         } 
 
-        constexpr double magnitude() const noexcept {
+        constexpr double magnitude_squared() const noexcept {
             if (N == 0) return 0;
             double sum_squares = 0;
             for (int i = 0; i < N; ++i) {
                 sum_squares += vector_[i] * vector_[i];
             }
-            return std::sqrt(sum_squares);
+            return sum_squares;
+        }
+
+        constexpr double magnitude() const noexcept {
+            return std::sqrt(magnitude_squared());
         }
 
         constexpr double size() const noexcept { return magnitude(); }
@@ -91,8 +95,12 @@ class Vector {
             return scalar_multiply(1.0/magnitude());
         }
 
+        constexpr T distance_squared(const Vector<T, N>& other) const {
+            return (x() - other.x())*(x()-other.x())+(y()-other.y())*(y()-other.y());
+        }
+
         constexpr T distance(const Vector<T, N>& other) const {
-            return std::sqrt((x()-other.x())*(x()-other.x())+(y()-other.y())*(y()-other.y()));
+            return std::sqrt(distance_squared(other));
         }
 
         constexpr Vector<T, N> projection_unto(const Vector<T, N>& other) const {
