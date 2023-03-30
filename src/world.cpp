@@ -9,6 +9,7 @@ World::World() {
     clock.restart();
     graphics = new Graphics(1500, 1500);
     solvers_.push_back(new PositionSolver());
+    solvers_.push_back(new ObjectAtRestSolver());
     solvers_.push_back(new VelocitySolver());
 }
 

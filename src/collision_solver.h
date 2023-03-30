@@ -21,4 +21,9 @@ class PositionSolver : public Solver {
         void solve(const Collision& collision) const override;
 };
 
+class ObjectAtRestSolver : public Solver {
+    public:
+        void solve(const Collision& collision) const override;
+};
+
 #endif

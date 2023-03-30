@@ -2,6 +2,7 @@
 
 #include "collision_solver.h"
 #include "debug.h"
+#include "constants.h"
 
 void VelocitySolver::solve(const Collision& collision) const {
     Object* obj1 = collision.obj1;
@@ -24,10 +25,10 @@ void VelocitySolver::solve(const Collision& collision) const {
     }
 
     Vector2f v1 = obj1->velocity - mass_fraction1*(delta_v.dot(delta_x)/
-            (delta_x.magnitude()*delta_x.magnitude()))*delta_x.opposite();
+            (delta_x.magnitude_squared()))*delta_x.opposite();
 
     Vector2f v2 = obj2->velocity - mass_fraction2*(delta_v.dot(delta_x)/
-            (delta_x.magnitude()*delta_x.magnitude()))*delta_x;
+            (delta_x.magnitude_squared()))*delta_x;
     
     if (obj1->is_kinetic)
         obj1->velocity = v1*0.9;
@@ -47,5 +48,21 @@ void PositionSolver::solve(const Collision& collision) const {
     } else {
         obj1->transform->position += -0.5*normal;
         obj2->transform->position += 0.5*normal;
+    }
+}
+
+void ObjectAtRestSolver::solve(const Collision& collision) const {
+    Object* obj1 = collision.obj1;
+    Object* obj2 = collision.obj2;
+
+    if (obj1->is_kinetic) {
+        if (obj1->velocity.magnitude() <= ZERO_VELOCITY) {
+            obj1->velocity = Vector2f{};
+        }
+    }
+    if (obj2->is_kinetic) {
+        if (obj2->velocity.magnitude() <= ZERO_VELOCITY) {
+            obj2->velocity = Vector2f{};
+        }
     }
 }
