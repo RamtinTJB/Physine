@@ -11,6 +11,7 @@ class Drawable {
     public:
         virtual void render(const Transform*) = 0;
         virtual Vector2f get_top_left(const Transform*) const = 0;
+        virtual void draw(sf::RenderWindow*, const Transform*) const = 0;
 
         sf::RenderTexture& get_texture() { return render_texture_; }
         void set_color(const Color& color) { color_ = color; }
@@ -38,12 +39,14 @@ class RectangleShape : public DrawableDerivationHelper<RectangleShape> {
     public:
         void render(const Transform* transform) override;
         Vector2f get_top_left(const Transform* t) const override;
+        void draw(sf::RenderWindow*, const Transform*) const override;
 };
 
 class CircleShape : public DrawableDerivationHelper<CircleShape> {
     public:
         void render(const Transform* transform) override;
         Vector2f get_top_left(const Transform* t) const override;
+        void draw(sf::RenderWindow*, const Transform*) const override;
 };
 
 #endif

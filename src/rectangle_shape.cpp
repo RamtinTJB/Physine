@@ -15,3 +15,14 @@ Vector2f RectangleShape::get_top_left(const Transform* t) const {
     double height = t->scale.y();
     return Vector2f{t->position.x() - width/2, t->position.y() - height/2};
 }
+
+void RectangleShape::draw(sf::RenderWindow* window, const Transform* transform) const {
+    sf::Sprite sprite(render_texture_.getTexture());
+    Vector2f top_left = get_top_left(transform);
+    Vector2f center_offset = transform->position - top_left;
+    sprite.setOrigin(center_offset.x(), center_offset.y());
+    Vector2f pos = transform->position;
+    sprite.setPosition(pos.x(), pos.y());
+    sprite.setRotation(transform->rotation);
+    window->draw(sprite);
+}
