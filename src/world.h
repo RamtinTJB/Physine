@@ -24,6 +24,7 @@ class World {
         Graphics* graphics = nullptr;
 
         bool gravity_ = true;
+        bool air_resistance_ = true;
 
         void add_air_resistance(Object* obj, double dt);
 
@@ -43,7 +44,11 @@ class World {
         Object* get_object_by_name(const std::string&);
         void mainloop();
 
-        void set_gravity(bool gravity) { gravity_ = gravity; }
+        void gravity(bool gravity) { gravity_ = gravity; }
+        bool gravity() const { return gravity_; }
+
+        void air_resistance(bool air_resistance) { air_resistance_ = air_resistance; }
+        bool air_resistance() const { return air_resistance_; }
 
         ~World();
 };

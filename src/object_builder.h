@@ -45,13 +45,18 @@ class ObjectBuilder {
             return *this;
         }
 
-        ObjectBuilder rotation(const Vector2f r) {
+        ObjectBuilder rotation(float r) {
             obj->transform->rotation = r;
             return *this;
         }
 
         ObjectBuilder velocity(const Vector2f& v) {
             obj->velocity = v;
+            return *this;
+        }
+
+        ObjectBuilder angular_velocity(float w) {
+            obj->angular_velocity = w;
             return *this;
         }
 

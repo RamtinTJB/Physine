@@ -7,6 +7,7 @@ add_library(PhysineCore collider.cpp world.cpp circle_shape.cpp
 add_executable(${PROJECT_NAME} main.cpp)
 add_executable(Test test.cpp)
 add_executable(AirResistance air_resistance_sample.cpp)
+add_executable(Rotation rotation_test.cpp)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
@@ -18,6 +19,7 @@ endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC PhysineCore)
 target_link_libraries(Test PUBLIC PhysineCore)
 target_link_libraries(AirResistance PUBLIC PhysineCore)
+target_link_libraries(Rotation PUBLIC PhysineCore)
 
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>

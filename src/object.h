@@ -16,17 +16,18 @@ class Object {
     public:
         const std::string name;
 
-        double mass;
+        double mass = 0.0;
         bool has_gravity = true;
         bool is_kinetic = true;
         Vector2f velocity;
+        float angular_velocity = 0.f;
         
         Transform* transform = nullptr;
         AbstractCollider* collider = nullptr;
         Drawable* drawable = nullptr;
 
         Object() = delete;
-        Object(const std::string& name) : name{name}, mass{0.} {
+        Object(const std::string& name) : name{name} {
             transform = new Transform();
         }
         Object(const std::string& name, Transform* transform) :

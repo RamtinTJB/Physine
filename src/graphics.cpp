@@ -12,8 +12,12 @@ void Graphics::draw_objects(const std::vector<Object*>& objs) {
     for (Object* obj : objs) {
         if (obj->is_drawable()) {
             sf::Sprite sprite(obj->drawable->get_texture().getTexture());
-            Vector2f pos = obj->drawable->get_top_left(obj->transform);
+            Vector2f top_left = obj->drawable->get_top_left(obj->transform);
+            Vector2f center_offset = obj->transform->position - top_left;
+            sprite.setOrigin(center_offset.x(), center_offset.y());
+            Vector2f pos = obj->transform->position;
             sprite.setPosition(pos.x(), pos.y());
+            sprite.setRotation(obj->transform->rotation);
             window_->draw(sprite);
         }
     }

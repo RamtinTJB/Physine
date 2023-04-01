@@ -19,8 +19,11 @@ void World::add_air_resistance(Object* obj, double dt) {
 
 void World::update_velocities(double dt) {
     for (Object* obj : objects_) {
-        if (obj->has_gravity && obj->is_kinetic) {
+        if (!obj->is_kinetic) continue;
+        if (obj->has_gravity && gravity_) {
             obj->velocity += g*dt;
+        }
+        if (air_resistance_) {
             add_air_resistance(obj, dt);
         }
     }
@@ -28,8 +31,9 @@ void World::update_velocities(double dt) {
 
 void World::update_transforms(double dt) {
     for (Object* obj : objects_) {
-        if (obj->is_kinetic)
-            obj->transform->position += obj->velocity * dt;
+        if (!obj->is_kinetic) continue;
+        obj->transform->position += obj->velocity * dt;
+        obj->transform->rotation += obj->angular_velocity * dt;
     }
 }
 
