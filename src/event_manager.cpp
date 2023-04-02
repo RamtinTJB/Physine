@@ -16,8 +16,8 @@ namespace {
 void EventManager::check_events(sf::RenderWindow& window) {
     sf::Event e;
     while (window.pollEvent(e)) {
-        if (e.type == sf::Event::Closed) {
-            closed_ = true;
+        if (e.type == sf::Event::Closed && map_contains(event_listeners_, EventType::Closed)) {
+            event_listeners_[EventType::Closed].execute_all(make_close_event()); 
         }
         if (e.type == sf::Event::KeyPressed) {
             if (map_contains(sf_key_mappings, e.key.code) && map_contains(event_listeners_, EventType::KeyPressed)) {

@@ -24,6 +24,8 @@ class World {
         CallbackList<World*> update_callbacks_;
         EventManager event_manager_;
 
+        bool running_ = true;
+
         double delta_time_;
 
         Clock clock;
@@ -63,6 +65,8 @@ class World {
         void add_event_listener(EventType, const std::function<void(Event)>&);
 
         double get_delta_time() const { return delta_time_; }
+
+        void close();
 
         ~World();
 };

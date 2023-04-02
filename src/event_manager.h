@@ -11,11 +11,9 @@
 class EventManager {
     private:
         std::unordered_map<EventType, CallbackList<Event>> event_listeners_;
-        bool closed_ = false;
 
     public:
         void check_events(sf::RenderWindow& window);
-        bool has_closed() const { return closed_; }
         void add_listener(EventType type, const std::function<void(Event)>&);
 };
 

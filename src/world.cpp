@@ -97,8 +97,7 @@ void World::add_event_listener(EventType type, const std::function<void(Event)>&
 
 void World::mainloop() {
     clock.restart();
-    while (true) {
-        if (event_manager_.has_closed()) return;
+    while (running_) {
         delta_time_ = clock.delta_time();
         clock.restart();
 
@@ -112,6 +111,10 @@ void World::mainloop() {
         event_manager_.check_events(*graphics->get_window());
         update_callbacks_.execute_all(this);
     }
+}
+
+void World::close() {
+    running_ = false;
     graphics->close();
 }
 
