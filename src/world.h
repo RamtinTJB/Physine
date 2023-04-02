@@ -10,6 +10,8 @@
 #include "graphics.h"
 #include "collision_solver.h"
 #include "collision.h"
+#include "callback_list.h"
+#include "event_manager.h"
 
 const Vector2f g {0, 1000};
 
@@ -19,6 +21,10 @@ class World {
         std::vector<Object*> objects_;
         std::vector<Collision> collisions_;
         std::vector<Solver*> solvers_;
+        CallbackList<World*> update_callbacks_;
+        EventManager event_manager_;
+
+        double delta_time_;
 
         Clock clock;
         Graphics* graphics = nullptr;
@@ -49,6 +55,14 @@ class World {
 
         void air_resistance(bool air_resistance) { air_resistance_ = air_resistance; }
         bool air_resistance() const { return air_resistance_; }
+
+        void add_update_callback(const std::function<void(World*)>& func) {
+            update_callbacks_.add_callback(func);
+        }
+
+        void add_event_listener(EventType, const std::function<void(Event)>&);
+
+        double get_delta_time() const { return delta_time_; }
 
         ~World();
 };
