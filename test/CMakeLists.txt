@@ -7,7 +7,7 @@ target_include_directories(doctest_h INTERFACE ${CMAKE_SOURCE_DIR}/extern)
 
 add_library(physine_lib INTERFACE)
 target_include_directories(physine_lib INTERFACE ${CMAKE_SOURCE_DIR}/src)
-target_sources(physine_lib PRIVATE ${CMAKE_SOURCE_DIR}/src/ph_math.cpp)
+target_sources(physine_lib PUBLIC ${CMAKE_SOURCE_DIR}/src/ph_math.cpp)
 
 include (CTest)
 
