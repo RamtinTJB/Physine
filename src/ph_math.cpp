@@ -1,4 +1,5 @@
-#include "math.h"
+#include "ph_math.h"
+#include "constants.h"
 
 double degree_to_radian(double degree) {
     return degree*PI/180;
