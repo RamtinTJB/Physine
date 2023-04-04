@@ -62,7 +62,7 @@ class World {
             update_callbacks_.add_callback(func);
         }
 
-        void add_event_listener(EventType, const std::function<void(Event)>&);
+        void add_event_listener(EventType, std::function<void(Event)>);
 
         double get_delta_time() const { return delta_time_; }
 

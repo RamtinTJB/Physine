@@ -91,7 +91,7 @@ Object* World::get_object_by_name(const std::string& name) {
     return nullptr;
 }
 
-void World::add_event_listener(EventType type, const std::function<void(Event)>& listener) {
+void World::add_event_listener(EventType type, std::function<void(Event)> listener) {
     event_manager_.add_listener(type, listener);
 }
 

@@ -17,13 +17,6 @@ void Graphics::draw_objects(const std::vector<Object*>& objs) {
     window_->display();
 }
 
-bool Graphics::has_closed() const {
-    sf::Event event;
-    while (window_->pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            window_->close();
-            return true;
-        }
-    }
-    return false;
+void Graphics::close() {
+    window_->close();
 }
