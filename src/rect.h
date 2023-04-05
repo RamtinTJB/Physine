@@ -24,6 +24,12 @@ struct Rect {
     constexpr Rect(const Vector2f& position, const Vector2f& size) :
         x{position[0]}, y{position[1]}, width{size[0]}, height{size[1]} {}
 
+    constexpr static Rect fromCenter(const Vector2f& center, const Vector2f& size) {
+        double x = center.x() - size.x()/2;
+        double y = center.y() - size.y()/2;
+        return Rect(Vector2f{x, y}, size);
+    }
+
     constexpr Rect(const Rect<T>& other) {
         x = other.x;
         y = other.y;
@@ -47,8 +53,30 @@ struct Rect {
 
     constexpr T area() const { return width * height; }
     constexpr T perimeter() const { return 2*(width+height); }
+
     Vector2f center() const {
-        return Vector2f {x+width/2, y+height/2};
+        return Vector2f {(x+width)/2, (y+height)/2};
+    }
+
+    Vector2f top_left() const {
+        return Vector2f{x, y};
+    }
+    
+    Vector2f top_right() const {
+        return Vector2f{x+width, y};
+    }
+
+    Vector2f bottom_left() const {
+        return Vector2f{x, y+height};
+    }
+
+    Vector2f bottom_right() const {
+        return Vector2f{x+width, y+height};
+    }
+
+    std::vector<Vector2f> get_corners() const {
+        return std::vector<Vector2f> {top_left(), top_right(),
+                                      bottom_left(), bottom_right()};
     }
 
     constexpr bool contains(const Vector2f& point) const {

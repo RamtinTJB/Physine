@@ -11,44 +11,52 @@ CollisionPoints BoxCollider::test_collision(const BoxCollider* bc) const {
 
 CollisionPoints BoxCollider::test_collision(const CircleCollider* cc) const {
     Transform* circle_t = cc->get_transform();
-    //Circle<double> other_circle(circle_t->position, circle_t->scale.x());
     Vector2f rect_center = transform->position;
     Vector2f rect_size = transform->scale;
     Vector2f circle_center_rotated = rotate(circle_t->position, rect_center, -transform->rotation);
+    Rect<double> rect = Rect<double>::fromCenter(rect_center, rect_size);
     Circle<double> other_circle(circle_center_rotated, circle_t->scale.x());
 
     CollisionPoints col;
     
-    if (std::abs(other_circle.x - rect_center.x()) < rect_size.x()/2) {
+    if (std::abs(other_circle.x - rect_center.x()) < rect.width/2) {
         if (std::abs(other_circle.y - rect_center.y()) <
-                other_circle.radius + rect_size.y()/2) {
+                other_circle.radius + rect.height/2) {
             col.has_collision = true;
             col.normal = Vector2f{0, other_circle.y - rect_center.y()};
-            double total_length = rect_size.y()/2 + other_circle.radius;
+            double total_length = rect.height/2 + other_circle.radius;
             double center_distance = other_circle.center().distance(
                     Vector2f{other_circle.x, rect_center.y()}
                     );
             col.overlap_length = total_length - center_distance;
         }
     }
-    if (std::abs(circle_t->position.y() - rect_center.y()) < rect_size.y()/2) {
+    else if (std::abs(circle_t->position.y() - rect_center.y()) < rect.height/2) {
         if (std::abs(circle_t->position.x() - rect_center.x()) <
-                circle_t->scale.x() + rect_size.x()/2) {
+                circle_t->scale.x() + rect.width/2) {
             col.has_collision = true;
             col.normal = Vector2f{circle_t->position.x() - rect_center.x(), 0};
-            double total_length = rect_size.x()/2 + other_circle.radius;
+            double total_length = rect.width/2 + other_circle.radius;
             double center_distance = other_circle.center().distance(
                     Vector2f{rect_center.x(), other_circle.y}
                     );
             col.overlap_length = total_length - center_distance;
         }
+    } else {
+        std::vector<Vector2f> corners = rect.get_corners();
+        for (const Vector2f& corner : corners) {
+            double total_distance = other_circle.center().distance(corner);
+            if (total_distance < other_circle.radius) {
+                col.has_collision = true;
+                col.normal = other_circle.center() - corner;
+//                col.overlap_length = total_distance - other_circle.radius;
+                col.overlap_length = 0;
+                break;
+            }
+        }
     }
     if (col.has_collision)
-        std::cout << col.normal << std::endl;
-    col.normal = rotate(col.normal, Vector2f(), transform->rotation);
-    if (col.has_collision)
-        std::cout << col.normal << std::endl;
-    // TODO Implement corner collisions
+        col.normal = rotate(col.normal, Vector2f(), transform->rotation);
     return col;
 }
 
