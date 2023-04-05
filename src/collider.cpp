@@ -1,6 +1,7 @@
 #include "collider.h"
 
 #include "debug.h"
+#include "ph_math.h"
 
 CollisionPoints BoxCollider::test_collision(const BoxCollider* bc) const {
     // TODO Fix this
@@ -10,9 +11,11 @@ CollisionPoints BoxCollider::test_collision(const BoxCollider* bc) const {
 
 CollisionPoints BoxCollider::test_collision(const CircleCollider* cc) const {
     Transform* circle_t = cc->get_transform();
-    Circle<double> other_circle(circle_t->position, circle_t->scale.x());
+    //Circle<double> other_circle(circle_t->position, circle_t->scale.x());
     Vector2f rect_center = transform->position;
     Vector2f rect_size = transform->scale;
+    Vector2f circle_center_rotated = rotate(circle_t->position, rect_center, -transform->rotation);
+    Circle<double> other_circle(circle_center_rotated, circle_t->scale.x());
 
     CollisionPoints col;
     
@@ -40,6 +43,11 @@ CollisionPoints BoxCollider::test_collision(const CircleCollider* cc) const {
             col.overlap_length = total_length - center_distance;
         }
     }
+    if (col.has_collision)
+        std::cout << col.normal << std::endl;
+    col.normal = rotate(col.normal, Vector2f(), transform->rotation);
+    if (col.has_collision)
+        std::cout << col.normal << std::endl;
     // TODO Implement corner collisions
     return col;
 }
