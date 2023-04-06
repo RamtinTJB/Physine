@@ -85,6 +85,19 @@ class ObjectBuilder {
                 .kinetic(obj->is_kinetic);
         }
 
+        static ObjectBuilder Rectangle(const std::string& name) {
+            return ObjectBuilder(name)
+                .collider<BoxCollider>()
+                .drawable(new RectangleShape());
+        }
+
+
+        static ObjectBuilder Circle(const std::string& name) {
+            return ObjectBuilder(name)
+                .collider<CircleCollider>()
+                .drawable(new CircleShape());
+        }
+
         Object* build() {
             return obj;
         }
