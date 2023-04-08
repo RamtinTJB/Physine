@@ -109,6 +109,7 @@ void World::step(Object* obj) const {
     apply_environmental_forces_on_object(obj);
     update_object_transform(obj);
     draw_object(obj);
+    graphics->draw_object(obj);
 }
 
 void World::mainloop() {
@@ -116,15 +117,17 @@ void World::mainloop() {
     while (running_) {
         delta_time_ = clock.delta_time();
         clock.restart();
+        graphics->clear_window();
 
         for (Object* obj : objects_) {
             step(obj);
         }
 
+        graphics->display();
+
         check_collisions();
         solve_collisions();
 
-        graphics->draw_objects(objects_);
         event_manager_.check_events(*graphics->get_window());
         update_callbacks_.execute_all(this);
     }
