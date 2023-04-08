@@ -34,16 +34,21 @@ class World {
         bool gravity_ = true;
         bool air_resistance_ = true;
 
-        void add_air_resistance(Object* obj, double dt);
+        void apply_gravity_to_object(Object*) const;
+        void apply_air_resistance_to_object(Object*) const;
+        void update_object_position(Object*) const;
+        void update_object_rotation(Object*) const;
 
-        void update_velocities(double dt);
-        void update_transforms(double dt);
+        void apply_environmental_forces_on_object(Object*) const;
+        void update_object_transform(Object*) const;
 
         void check_collision(Object* obj1, Object* obj2);
         void check_collisions();
         void solve_collisions();
 
-        void draw_objects();
+        void draw_object(Object*) const;
+
+        void step(Object*) const;
     
     public:
         World();

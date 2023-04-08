@@ -13,28 +13,40 @@ World::World() {
     solvers_.push_back(new VelocitySolver());
 }
 
-void World::add_air_resistance(Object* obj, double dt) {
-    obj->velocity -= (0.5*0.05*dt/obj->mass)*obj->velocity.dot(obj->velocity)*obj->velocity.unit();
-}
-
-void World::update_velocities(double dt) {
-    for (Object* obj : objects_) {
-        if (!obj->is_kinetic) continue;
-        if (obj->has_gravity && gravity_) {
-            obj->velocity += g*dt;
-        }
-        if (air_resistance_) {
-            add_air_resistance(obj, dt);
-        }
+void World::apply_gravity_to_object(Object* obj) const {
+    if (obj->has_gravity && gravity_) {
+        obj->velocity += g * delta_time_;
     }
 }
 
-void World::update_transforms(double dt) {
-    for (Object* obj : objects_) {
-        if (!obj->is_kinetic) continue;
-        obj->transform->position += obj->velocity * dt;
-        obj->transform->rotation += obj->angular_velocity * dt;
+void World::apply_air_resistance_to_object(Object* obj) const {
+    if (air_resistance_) {
+        obj->velocity -= (0.5*0.05*delta_time_/obj->mass) * obj->velocity.dot(obj->velocity)*obj->velocity.unit();
     }
+}
+
+void World::update_object_position(Object* obj) const {
+    if (obj->is_kinetic){
+        obj->transform->position += obj->velocity * delta_time_;
+    }
+}
+
+void World::update_object_rotation(Object* obj) const {
+    if (obj->is_kinetic) {
+        obj->transform->rotation += obj->angular_velocity * delta_time_;
+    }
+}
+
+void World::apply_environmental_forces_on_object(Object* obj) const {
+    if (obj->is_kinetic) {
+        apply_gravity_to_object(obj);
+        apply_air_resistance_to_object(obj);
+    }
+}
+
+void World::update_object_transform(Object* obj) const {
+    update_object_position(obj);
+    update_object_rotation(obj);
 }
 
 void World::check_collision(Object* obj1, Object* obj2) {
@@ -72,11 +84,9 @@ void World::solve_collisions() {
     collisions_.clear();
 }
 
-void World::draw_objects() {
-    for (Object* obj: objects_) {
-        if (obj->is_drawable()) {
-            obj->drawable->render(obj->transform);
-        }
+void World::draw_object(Object* obj) const {
+    if (obj->is_drawable()) {
+        obj->drawable->render(obj->transform);
     }
 }
 
@@ -95,18 +105,25 @@ void World::add_event_listener(EventType type, std::function<void(Event)> listen
     event_manager_.add_listener(type, listener);
 }
 
+void World::step(Object* obj) const {
+    apply_environmental_forces_on_object(obj);
+    update_object_transform(obj);
+    draw_object(obj);
+}
+
 void World::mainloop() {
     clock.restart();
     while (running_) {
         delta_time_ = clock.delta_time();
         clock.restart();
 
-        update_velocities(delta_time_);
-        update_transforms(delta_time_);
+        for (Object* obj : objects_) {
+            step(obj);
+        }
+
         check_collisions();
         solve_collisions();
 
-        draw_objects();
         graphics->draw_objects(objects_);
         event_manager_.check_events(*graphics->get_window());
         update_callbacks_.execute_all(this);
