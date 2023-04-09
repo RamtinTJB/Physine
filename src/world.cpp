@@ -5,12 +5,16 @@
 #include <thread>
 #include <chrono>
 
-World::World() {
+World::World(int width, int height) {
     clock.restart();
-    graphics = new Graphics(1500, 1500);
+    init_graphics(width, height);
     solvers_.push_back(new PositionSolver());
     solvers_.push_back(new ObjectAtRestSolver());
     solvers_.push_back(new VelocitySolver());
+}
+
+void World::init_graphics(int width, int height) {
+    graphics = new Graphics(width, height);
 }
 
 void World::apply_gravity_to_object(Object* obj) const {

@@ -33,6 +33,8 @@ class World {
 
         bool gravity_ = true;
         bool air_resistance_ = true;
+        
+        void init_graphics(int width, int height);
 
         void apply_gravity_to_object(Object*) const;
         void apply_air_resistance_to_object(Object*) const;
@@ -51,7 +53,8 @@ class World {
         void step(Object*) const;
     
     public:
-        World();
+        World() = delete;
+        World(int width, int height);
 
         void add_object(Object* obj);
         Object* get_object_by_name(const std::string&);
