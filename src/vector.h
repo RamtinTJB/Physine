@@ -43,7 +43,7 @@ class Vector {
         constexpr double magnitude_squared() const noexcept {
             if (N == 0) return 0;
             double sum_squares = 0;
-            for (int i = 0; i < N; ++i) {
+            for (size_t i = 0; i < N; ++i) {
                 sum_squares += vector_[i] * vector_[i];
             }
             return sum_squares;
@@ -58,7 +58,7 @@ class Vector {
         constexpr double dot(const Vector<T, N>& other) const {
             if (N == 0) return 0;
             double result = 0;
-            for (int i = 0; i < N; ++i) {
+            for (size_t i = 0; i < N; ++i) {
                 result += vector_[i] * other.vector_[i];
             }
             return result;
@@ -73,7 +73,7 @@ class Vector {
 
         constexpr Vector<T, N> add(const Vector<T, N>&other) const {
             Vector<T, N> new_vector;
-            for (int i = 0; i < N; ++i) {
+            for (size_t i = 0; i < N; ++i) {
                 new_vector.vector_[i] = vector_[i] + other.vector_[i];
             }
             return new_vector;
@@ -81,7 +81,7 @@ class Vector {
 
         constexpr Vector<T, N> scalar_multiply(const T& scalar) const {
             Vector<T, N> new_vector;
-            for (int i = 0; i < N; ++i) {
+            for (size_t i = 0; i < N; ++i) {
                 new_vector.vector_[i] = vector_[i] * scalar;
             }
             return new_vector;
@@ -108,7 +108,7 @@ class Vector {
         }
 
         constexpr Vector() {
-            for (int i = 0; i < N; ++i) {
+            for (size_t i = 0; i < N; ++i) {
                 vector_[i] = 0;
             }
         }
@@ -133,14 +133,14 @@ class Vector {
         }
 
         constexpr Vector<T, N> operator+=(const Vector<T, N>& rhs) const {
-            for (int i = 0; i < N; i++) {
+            for (size_t i = 0; i < N; i++) {
                 vector_[i] += rhs[i];
             }
             return *this;
         }
 
         constexpr Vector<T, N> operator-=(const Vector<T, N>& rhs) const {
-            for (int i = 0; i < N; i++) {
+            for (size_t i = 0; i < N; i++) {
                 vector_[i] -= rhs[i];
             }
             return *this;
@@ -154,7 +154,7 @@ class Vector {
 template <class T, size_t N1, size_t N2>
 inline bool operator==(const Vector<T, N1>& lhs, const Vector<T, N2>& rhs) {
     if (lhs.dimension() != rhs.dimension()) return false;
-    for (int i = 0; i < lhs.dimension(); ++i) {
+    for (size_t i = 0; i < lhs.dimension(); ++i) {
         if constexpr (std::is_integral_v<T>) {
             if (lhs.at(i) != rhs.at(i)) return false;
         } else if (std::is_floating_point_v<T>) {
@@ -192,7 +192,7 @@ Vector<T, N> operator*(const Vector<T, N>& lhs, const T& scalar) {
 template <class T, size_t N>
 inline std::ostream& operator<<(std::ostream& os, const Vector<T, N>& rhs) {
     os << "<";
-    for (int i = 0; i < N-1; ++i) {
+    for (size_t i = 0; i < N-1; ++i) {
        os << rhs.at(i) << ", "; 
     }
     os << rhs.at(N-1) << ">";

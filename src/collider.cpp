@@ -3,7 +3,7 @@
 #include "debug.h"
 #include "ph_math.h"
 
-CollisionPoints BoxCollider::test_collision(const BoxCollider* bc) const {
+CollisionPoints BoxCollider::test_collision([[maybe_unused]] const BoxCollider* bc) const {
     // TODO Fix this
     //return box.intersects(bc->box);
     return CollisionPoints();

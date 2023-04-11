@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.12)
 project (Physine VERSION 1.0 LANGUAGES CXX)
 
 add_library(PhysineCore collider.cpp world.cpp circle_shape.cpp
-    rectangle_shape.cpp graphics.cpp collision_solver.cpp debug.cpp color.cpp)
+    rectangle_shape.cpp graphics.cpp collision_solver.cpp debug.cpp color.cpp event_manager.cpp
+    ph_math.cpp)
+
+target_compile_options(PhysineCore PRIVATE -Wall -Wextra -Wpedantic -Wno-c99-extensions)
 
 add_executable(${PROJECT_NAME} main.cpp)
 add_executable(Test test.cpp)

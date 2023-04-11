@@ -69,8 +69,8 @@ void World::check_collision(Object* obj1, Object* obj2) {
 }
 
 void World::check_collisions() {
-    for (int i = 0; i < objects_.size(); ++i) {
-        for (int j = i; j < objects_.size(); ++j) {
+    for (size_t i = 0; i < objects_.size(); ++i) {
+        for (size_t j = i; j < objects_.size(); ++j) {
             Object* obj1 = objects_[i];
             Object* obj2 = objects_[j];
             if (obj1 == obj2) continue;
