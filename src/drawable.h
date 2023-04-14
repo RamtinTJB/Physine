@@ -21,6 +21,11 @@ class Drawable {
 
         virtual Drawable* clone() const = 0;
 
+        Drawable() = default;
+        Drawable(const Drawable& other) {
+            color_ = other.color_;
+        }
+
     protected:
         sf::RenderTexture render_texture_;
         Color color_;
@@ -29,24 +34,68 @@ class Drawable {
 template <class Derived>
 class DrawableDerivationHelper : public Drawable {
     virtual Drawable* clone() const override {
-        Derived* derived = new Derived();
-        derived->set_color(this->get_color());
-        return derived;
+        return new Derived(static_cast<Derived const&>(*this));
     }
 };
 
 class RectangleShape : public DrawableDerivationHelper<RectangleShape> {
     public:
-        void render(const Transform* transform) override;
-        Vector2f get_top_left(const Transform* t) const override;
+        void render(const Transform*) override;
+        Vector2f get_top_left(const Transform*) const override;
         void draw(sf::RenderWindow*, const Transform*) const override;
+
+        RectangleShape() = default;
+        RectangleShape(const RectangleShape& other) {
+            color_ = other.color_;
+        }
 };
 
 class CircleShape : public DrawableDerivationHelper<CircleShape> {
     public:
-        void render(const Transform* transform) override;
-        Vector2f get_top_left(const Transform* t) const override;
+        void render(const Transform*) override;
+        Vector2f get_top_left(const Transform*) const override;
         void draw(sf::RenderWindow*, const Transform*) const override;
+
+        CircleShape() = default;
+        CircleShape(const CircleShape& other) {
+            color_ = other.color_;
+        }
+};
+
+class ImageDrawable : public DrawableDerivationHelper<ImageDrawable> {
+    public:
+        void render(const Transform*) override;
+        Vector2f get_top_left(const Transform*) const override;
+        void draw(sf::RenderWindow*, const Transform*) const override;
+
+        ImageDrawable() = delete;
+        ImageDrawable(const std::string& image_path) {
+            image_path_ = image_path;
+        }
+        ImageDrawable(const ImageDrawable& other) {
+            image_path_ = other.image_path_;
+        }
+
+    private:
+        std::string image_path_;
+};
+
+class TextDrawable : public DrawableDerivationHelper<TextDrawable> {
+    public:
+        void render(const Transform*) override;
+        Vector2f get_top_left(const Transform*) const override;
+        void draw(sf::RenderWindow*, const Transform*) const override;
+
+        TextDrawable() = default;
+        TextDrawable(const TextDrawable& other) {
+            text_ = other.text_;
+        }
+
+        void text(const std::string& text) { text_ = text; }
+        std::string text() const { return text_; }
+
+    private:
+        std::string text_ = "";
 };
 
 #endif
