@@ -5,11 +5,22 @@
 #include <unordered_map>
 
 namespace {
+    using Key = sf::Keyboard::Key;
     std::unordered_map<sf::Keyboard::Key, KeyCode> sf_key_mappings {
-        {sf::Keyboard::Key::Left, KeyCode::Left},
-        {sf::Keyboard::Key::Right, KeyCode::Right},
-        {sf::Keyboard::Key::Up, KeyCode::Up},
-        {sf::Keyboard::Key::Down, KeyCode::Down}
+        {Key::Left, KeyCode::Left},
+        {Key::Right, KeyCode::Right},
+        {Key::Up, KeyCode::Up},
+        {Key::Down, KeyCode::Down},
+        {Key::A, KeyCode::A},
+        {Key::B, KeyCode::B}, {Key::C, KeyCode::C}, {Key::D, KeyCode::D},
+        {Key::E, KeyCode::E}, {Key::F, KeyCode::F}, {Key::G, KeyCode::G},
+        {Key::H, KeyCode::H}, {Key::I, KeyCode::I}, {Key::J, KeyCode::J},
+        {Key::K, KeyCode::K}, {Key::L, KeyCode::L}, {Key::M, KeyCode::M},
+        {Key::N, KeyCode::N}, {Key::O, KeyCode::O}, {Key::P, KeyCode::P},
+        {Key::Q, KeyCode::Q}, {Key::R, KeyCode::R}, {Key::S, KeyCode::S},
+        {Key::T, KeyCode::T}, {Key::U, KeyCode::U}, {Key::V, KeyCode::V},
+        {Key::W, KeyCode::W}, {Key::X, KeyCode::X}, {Key::Y, KeyCode::Y},
+        {Key::Z, KeyCode::Z}
     };
 }
 
