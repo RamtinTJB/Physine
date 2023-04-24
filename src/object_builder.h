@@ -98,6 +98,11 @@ class ObjectBuilder {
                 .drawable(new CircleShape());
         }
 
+        static ObjectBuilder Image(const std::string& name, const std::string& image_path) {
+            return ObjectBuilder(name)
+                .drawable(new ImageDrawable(image_path));
+        }
+
         Object* build() {
             return obj;
         }

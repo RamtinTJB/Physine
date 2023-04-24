@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project (Physine VERSION 1.0 LANGUAGES CXX)
 
-add_library(PhysineCore collider.cpp world.cpp circle_shape.cpp
+add_library(PhysineCore collider.cpp world.cpp circle_shape.cpp text_drawable.cpp image_drawable.cpp
     rectangle_shape.cpp graphics.cpp collision_solver.cpp debug.cpp color.cpp event_manager.cpp
     ph_math.cpp)
 

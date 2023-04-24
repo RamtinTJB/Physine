@@ -71,13 +71,17 @@ class ImageDrawable : public DrawableDerivationHelper<ImageDrawable> {
         ImageDrawable() = delete;
         ImageDrawable(const std::string& image_path) {
             image_path_ = image_path;
+            load_image();
         }
         ImageDrawable(const ImageDrawable& other) {
             image_path_ = other.image_path_;
+            load_image();
         }
 
     private:
+        void load_image();
         std::string image_path_;
+        sf::Texture texture_;
 };
 
 class TextDrawable : public DrawableDerivationHelper<TextDrawable> {
