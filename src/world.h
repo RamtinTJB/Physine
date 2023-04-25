@@ -58,6 +58,7 @@ class World {
 
         void add_object(Object* obj);
         Object* get_object_by_name(const std::string&);
+
         void mainloop();
 
         void gravity(bool gravity) { gravity_ = gravity; }
@@ -75,6 +76,7 @@ class World {
         double get_delta_time() const { return delta_time_; }
 
         void close();
+        void exit_on_close();
 
         ~World();
 };

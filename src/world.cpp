@@ -142,6 +142,10 @@ void World::close() {
     graphics->close();
 }
 
+void World::exit_on_close() {
+    add_event_listener(EventType::Closed, [this]([[maybe_unused]] Event e) { this->close(); });
+}
+
 World::~World() {
     for (Object* obj : objects_) {
         delete obj;
