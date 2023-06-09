@@ -1,16 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 project (Physine VERSION 1.0 LANGUAGES CXX)
 
-add_library(PhysineCore collider.cpp world.cpp circle_shape.cpp text_drawable.cpp image_drawable.cpp
+set(version 1.0)
+
+add_library(PhysineCore STATIC collider.cpp world.cpp circle_shape.cpp image_drawable.cpp
     rectangle_shape.cpp graphics.cpp collision_solver.cpp debug.cpp color.cpp event_manager.cpp
     ph_math.cpp)
 
 target_compile_options(PhysineCore PRIVATE -Wall -Wextra -Wpedantic -Wno-c99-extensions)
-
-add_executable(${PROJECT_NAME} main.cpp)
-add_executable(Test test.cpp)
-add_executable(AirResistance air_resistance_sample.cpp)
-add_executable(Rotation rotation_test.cpp)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
@@ -19,15 +16,30 @@ if (SFML_FOUND)
     target_link_libraries(PhysineCore sfml-network sfml-audio sfml-graphics sfml-window sfml-system)
 endif()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC PhysineCore)
-target_link_libraries(Test PUBLIC PhysineCore)
-target_link_libraries(AirResistance PUBLIC PhysineCore)
-target_link_libraries(Rotation PUBLIC PhysineCore)
-
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
+target_include_directories(PhysineCore PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 )
 
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../extern>
-)
+install(FILES collider.h color.h event.h keyboard.h rect.h callback_list.h collision.h common.h world.h
+        circle.h collision_points.h constants.h event_manager.h object.h timer.h object_builder.h
+        transform.h clock.h collision_solver.h debug.h graphics.h utils.h drawable.h ph_math.h vector.h
+        DESTINATION include/physine-${version})
+install(TARGETS PhysineCore
+    DESTINATION lib/physine-${version}
+    EXPORT physine-targets)
+install(EXPORT physine-targets
+    DESTINATION lib/physine-${version})
+
+configure_file(
+    ${Physine_SOURCE_DIR}/pkg/physine-config.cmake.in
+    ${Physine_BINARY_DIR}/pkg/physine-config.cmake @ONLY
+    )
+
+configure_file(
+    ${Physine_SOURCE_DIR}/physine-config-version.cmake.in
+    ${Physine_BINARY_DIR}/physine-config-version.cmake @ONLY
+    )
+
+install(FILES ${Physine_BINARY_DIR}/pkg/physine-config.cmake
+    ${Physine_BINARY_DIR}/physine-config-version.cmake
+    DESTINATION lib/physine-${version})
