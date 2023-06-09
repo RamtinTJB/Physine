@@ -23,7 +23,7 @@ target_include_directories(PhysineCore PUBLIC
 install(FILES collider.h color.h event.h keyboard.h rect.h callback_list.h collision.h common.h world.h
         circle.h collision_points.h constants.h event_manager.h object.h timer.h object_builder.h
         transform.h clock.h collision_solver.h debug.h graphics.h utils.h drawable.h ph_math.h vector.h
-        DESTINATION include/physine-${version})
+        DESTINATION include/physine-${version}/Physine)
 install(TARGETS PhysineCore
     DESTINATION lib/physine-${version}
     EXPORT physine-targets)
