@@ -1,0 +1,6 @@
+get_filename_component(_dir "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_prefix "${_dir}/../.." ABSOLUTE)
+
+include("${_prefix}/lib/physine-@version@/physine-targets.cmake")
+
+set(physine_INCLUDE_DIRS "${_prefix}/include/physine-@version@")
